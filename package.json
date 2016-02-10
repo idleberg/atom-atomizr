@@ -1,5 +1,5 @@
 {
-  "name": "Atomizr",
+  "name": "atomizr",
   "description": "Converts Sublime Text completions into Atom snippets, and vice versa",
   "version": "0.1.0",
   "license": "MIT",

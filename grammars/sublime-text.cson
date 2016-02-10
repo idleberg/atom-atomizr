@@ -1,9 +1,13 @@
 fileTypes: [
+  "sublime-build"
+  "sublime-commands"
   "sublime-completions"
   "sublime-keymap"
   "sublime-macro"
+  "sublime-menu"
   "sublime-mousemap"
   "sublime-settings"
+  "sublime-theme"
 ]
 name: "JSON (Sublime Text)"
 patterns: [
