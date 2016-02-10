@@ -43,9 +43,8 @@ module.exports = Atomizr =
     # Valid CSON?
     if obj instanceof Error
       throw new SyntaxError("Invalid CSON")
-      return
 
-      # Conversion
+    # Conversion
     sublime =
       scope: null
       completions: []
@@ -71,9 +70,8 @@ module.exports = Atomizr =
     obj = CSON.parseJSONString(text)
 
     # Valid JSON?
-    if obj instanceof Error
+    if obj instanceof Error || typeof obj.scope is 'undefined'
       throw new SyntaxError("Invalid JSON")
-      return
 
     # Conversion
     scope = "." + obj.scope
