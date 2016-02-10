@@ -1,13 +1,19 @@
 {
   "name": "Atomizr",
   "description": "Converts Sublime Text completions into Atom snippets, and vice versa",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "license": "MIT",
   "author": {
     "name": "Jan T. Sott",
     "url": "http://github.com/idleberg"
   },
-  "keywords": ["sublime text", "atom", "conversion", "atom2subl", "subl2atom"],
+  "keywords": [
+    "sublime text",
+    "atom",
+    "conversion",
+    "atom2subl",
+    "subl2atom"
+  ],
   "activationCommands": {
     "atom-workspace": [
       "atomizr:automatic-conversion",
