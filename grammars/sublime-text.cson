@@ -1,0 +1,14 @@
+fileTypes: [
+  "sublime-completions"
+  "sublime-keymap"
+  "sublime-macro"
+  "sublime-mousemap"
+  "sublime-settings"
+]
+name: "JSON (Sublime Text)"
+patterns: [
+  {
+    include: "source.json"
+  }
+]
+scopeName: "source.json.subl"

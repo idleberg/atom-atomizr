@@ -1,0 +1,31 @@
+# See https://atom.io/docs/latest/hacking-atom-package-word-count#menus for more details
+'context-menu':
+  'atom-text-editor': [
+    {
+      'label': 'Atomizr (automatic)'
+      'command': 'atomizr:automatic-conversion'
+    }
+  ]
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      'label': 'Atomizr'
+      'submenu': [
+        {
+          'label': 'Automatic conversion'
+          'command': 'atomizr:automatic-conversion'
+        },
+        { 'type': 'separator' },
+        {
+          'label': 'Atom to Sublime Text conversion'
+          'command': 'atomizr:convert-atom-to-sublime-text'
+        },
+        {
+          'label': 'Sublime Text to Atom conversion'
+          'command': 'atomizr:convert-sublime-text-to-atom'
+        }
+      ]
+    ]
+  }
+]
