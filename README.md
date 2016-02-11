@@ -8,6 +8,8 @@
 
 Converts Sublime Text completions into Atom snippets, and vice versa.
 
+This package is also available for [Sublime Text](https://github.com/idleberg/sublime-atomizr) and as an even more powerful [Ruby script](https://github.com/idleberg/atomizr).
+
 ## Installation
 
 ### apm
