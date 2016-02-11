@@ -6,7 +6,6 @@ CSON = require('CSON')
 module.exports = Atomizr =
   workspace: atom.workspace
   grammars: atom.grammars
-  modalPanel: null
   subscriptions: null
 
   activate: (state) ->
@@ -20,7 +19,6 @@ module.exports = Atomizr =
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-sublime-text-to-atom': => @convertSubl()
 
   deactivate: ->
-    @modalPanel.destroy()
     @subscriptions.dispose()
 
   # Automatic conversion, based on scope
