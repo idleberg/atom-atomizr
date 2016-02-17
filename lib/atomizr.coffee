@@ -53,6 +53,9 @@ module.exports = Atomizr =
         unless typeof j.prefix is 'undefined'
           sublime.completions.push { trigger: j.prefix, contents: j.body }
 
+    if sublime.completions.lenght is 0
+      throw new RangeError("No snippets to convert")
+
     # Convert to JSON
     json = JSON.stringify(sublime, null, 2)
 
