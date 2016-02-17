@@ -53,7 +53,7 @@ module.exports = Atomizr =
         unless typeof j.prefix is 'undefined'
           sublime.completions.push { trigger: j.prefix, contents: j.body }
 
-    if sublime.completions.lenght is 0
+    if sublime.completions.length is 0
       throw new RangeError("No snippets to convert")
 
     # Convert to JSON
@@ -81,6 +81,9 @@ module.exports = Atomizr =
     for k,v of obj.completions
       unless typeof v.trigger is 'undefined'
         completions[v.trigger] = { prefix: v.trigger, body: v.contents }
+
+    if completions.length is 0
+      throw new RangeError("No completions to convert")
 
     atom = {}
     atom[scope] = completions
