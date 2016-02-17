@@ -8,6 +8,16 @@ module.exports = Atomizr =
   grammars: atom.grammars
   subscriptions: null
 
+  # https://gist.github.com/idleberg/fca633438329cc5ae327
+  scopes:
+    "source.cpp": ".source.cpp"
+    "source.java-props": ".source.java-properties"
+    "source.objc++": ".source.objcpp"
+    "source.php": ".source.html.php"
+    "source.scss": ".source.css.scss"
+    "source.todo": ".text.todo"
+    "source.markdown": ".source.gfm"
+
   activate: (state) ->
 
     # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
@@ -48,7 +58,14 @@ module.exports = Atomizr =
       completions: []
 
     for k,v of obj
-      sublime.scope = k.substring(1)
+
+      # Get scope, convert if necessary
+      for subl,atom of @scopes
+        if k is atom
+          sublime.scope = subl
+        else
+          sublime.scope = k.substring(1)
+
       for i, j of v
         unless typeof j.prefix is 'undefined'
           sublime.completions.push { trigger: j.prefix, contents: j.body }
@@ -75,8 +92,14 @@ module.exports = Atomizr =
       throw new SyntaxError("Invalid JSON")
 
     # Conversion
-    scope = "." + obj.scope
     completions = {}
+
+    # Get scope, convert if necessary
+    for subl,atom of @scopes
+      if obj.scope is subl
+        scope = atom
+      else
+        scope = "." + obj.scope
 
     for k,v of obj.completions
       unless typeof v.trigger is 'undefined'
