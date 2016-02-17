@@ -26,8 +26,8 @@ This package is also available for [Sublime Text](https://github.com/idleberg/su
 There are three basic commands available to start conversion, each available from the Command Palette or the Packages menu.
 
 * Automatic conversion
-* Convert Sublime Text to Atom
-* Convert Atom to Sublime Text
+* Convert Sublime Text to Atom (<kbd>Ctrl</kbd>-<kbd>Alt</kbd>-<kbd>s</kbd>, <kbd>Ctrl</kbd>-<kbd>Alt</kbd>-<kbd>a</kbd>)
+* Convert Atom to Sublime Text (<kbd>Ctrl</kbd>-<kbd>Alt</kbd>-<kbd>a</kbd>, <kbd>Ctrl</kbd>-<kbd>Alt</kbd>-<kbd>s</kbd>)
 
 A shortcut to automatic conversion is also available in the context menu.
 
