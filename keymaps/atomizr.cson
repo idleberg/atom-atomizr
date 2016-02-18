@@ -1,4 +1,4 @@
 'atom-text-editor':
-  'ctrl-alt-a ctrl-alt-a': 'atomizr:automatic-conversion'
-  'ctrl-alt-a ctrl-alt-s': 'atomizr:convert-atom-to-sublime-text'
-  'ctrl-alt-s ctrl-alt-a': 'atomizr:convert-sublime-text-to-atom'
+  'ctrl-a ctrl-a': 'atomizr:automatic-conversion'
+  'ctrl-a ctrl-s': 'atomizr:convert-atom-to-sublime-text'
+  'ctrl-s ctrl-a': 'atomizr:convert-sublime-text-to-atom'
