@@ -33,12 +33,13 @@ A shortcut to automatic conversion is also available in the context menu.
 
 ### Keyboard Shortcuts
 
-Memorizing the keyboard shortcuts for conversion is easy. To trigger conversion hold both <kbd>Ctrl</kbd>+<kbd>Alt</kbd>, then think of the <kbd>s</kbd>-key for Sublime Text and the <kbd>a</kbd>-key for Atom:
+Memorizing the keyboard shortcuts for conversion is easy. Just think of the <kbd>s</kbd> key for Sublime Text and the <kbd>a</kbd> key for Atom:
 
-* Sublime Text to Atom <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>s</kbd>, <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>a</kbd>
-* Atom to Sublime Text <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>a</kbd>, <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>s</kbd>
+* Sublime Text to Atom: hold <kbd>Ctrl</kbd>+<kbd>Alt</kbd>, press <kbd>s</kbd> then <kbd>a</kbd>
 
-For automatic conversion, press <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>a</kbd> twice.
+* Atom to Sublime Text: hold <kbd>Ctrl</kbd>+<kbd>Alt</kbd>, press <kbd>a</kbd> then <kbd>s</kbd>
+
+For automatic conversion, hold <kbd>Ctrl</kbd>+<kbd>Alt</kbd> and press <kbd>a</kbd> twice.
 
 ## License
 
