@@ -12,16 +12,16 @@
       'label': 'Atomizr'
       'submenu': [
         {
-          'label': 'Automatic conversion'
+          'label': 'Automatic Conversion'
           'command': 'atomizr:automatic-conversion'
         },
         { 'type': 'separator' },
         {
-          'label': 'Atom to Sublime Text conversion'
+          'label': 'Convert Atom to Sublime Text'
           'command': 'atomizr:convert-atom-to-sublime-text'
         },
         {
-          'label': 'Sublime Text to Atom conversion'
+          'label': 'Convert Sublime Text to Atom'
           'command': 'atomizr:convert-sublime-text-to-atom'
         }
       ]
