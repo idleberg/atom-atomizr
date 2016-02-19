@@ -23,10 +23,11 @@ module.exports = Atomizr =
     # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
     @subscriptions = new CompositeDisposable
 
-    # Register command that toggles this view
+    # Register commands
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:automatic-conversion': => @autoConvert()
-    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-atom-to-sublime-text': => @convertAtom()
-    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-sublime-text-to-atom': => @convertSubl()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-atom-to-sublime-text': => @atomToSubl()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-sublime-text-to-atom': => @sublToAtom()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-atom-format': => @atomToAtom()
 
   deactivate: ->
     @subscriptions.dispose()
@@ -37,12 +38,12 @@ module.exports = Atomizr =
     scope = editor.getGrammar().scopeName
 
     if scope is "source.coffee"
-      @convertAtom()
+      @atomToSubl()
     else if scope is "source.json.subl"
-      @convertSubl()
+      @sublToAtom()
 
   # Convert Atom snippet into Sublime Text completion
-  convertAtom: ->
+  atomToSubl: ->
     editor = @workspace.getActiveTextEditor()
     text = editor.getText()
 
@@ -81,7 +82,7 @@ module.exports = Atomizr =
     editor.setGrammar(@grammars.grammarForScopeName('source.json.subl'))
 
   # Convert Sublime Text completion into Atom snippet
-  convertSubl: ->
+  sublToAtom: ->
     editor = @workspace.getActiveTextEditor()
     text = editor.getText()
 
@@ -117,3 +118,39 @@ module.exports = Atomizr =
     # Write back to editor and change scope
     editor.setText(cson)
     editor.setGrammar(@grammars.grammarForScopeName('source.coffee'))
+
+  # Convert Atom snippet format (CSON to JSON, or vice versa)
+  atomToAtom: ->
+    editor = @workspace.getActiveTextEditor()
+    scope = editor.getGrammar().scopeName
+
+    # Automatic conversion, based on scope
+    if scope is "source.coffee"
+      @csonToJson()
+    else if scope is "source.json"
+      @jsonToCson()
+
+  csonToJson: ->
+    editor = @workspace.getActiveTextEditor()
+    text = editor.getText()
+
+    # Conversion
+    input = CSON.parseCSONString(text)
+    output = CSON.createJSONString(input)
+
+    # Write back to editor and change scope
+    editor.setText(output)
+    editor.setGrammar(@grammars.grammarForScopeName('source.json'))
+
+  jsonToCson: ->
+    editor = @workspace.getActiveTextEditor()
+    text = editor.getText()
+
+    # Conversion
+    input = CSON.parseJSONString(text)
+    output = CSON.createCSONString(input)
+
+    # Write back to editor and change scope
+    editor.setText(output)
+    editor.setGrammar(@grammars.grammarForScopeName('source.coffee'))
+

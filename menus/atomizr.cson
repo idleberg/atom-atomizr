@@ -24,6 +24,11 @@
           'label': 'Convert Sublime Text to Atom'
           'command': 'atomizr:convert-sublime-text-to-atom'
         }
+        { 'type': 'separator' },
+        {
+          'label': 'Convert Atom snippet format (CSON↔JSON)'
+          'command': 'atomizr:convert-atom-format'
+        }
       ]
     ]
   }
