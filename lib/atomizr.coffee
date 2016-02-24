@@ -4,6 +4,7 @@
 CSON = require('CSON')
 
 module.exports = Atomizr =
+  atom: atom
   workspace: atom.workspace
   grammars: atom.grammars
   subscriptions: null
@@ -35,6 +36,9 @@ module.exports = Atomizr =
   # Automatic conversion, based on scope
   autoConvert: ->
     editor = @workspace.getActiveTextEditor()
+    if typeof editor is "undefined"
+      @atom.beep()
+      return
     scope = editor.getGrammar().scopeName
 
     if scope is "source.coffee"
@@ -45,6 +49,9 @@ module.exports = Atomizr =
   # Convert Atom snippet into Sublime Text completion
   atomToSubl: ->
     editor = @workspace.getActiveTextEditor()
+    if typeof editor is "undefined"
+      @atom.beep()
+      return
     text = editor.getText()
 
     obj = CSON.parseCSONString(text)
@@ -84,6 +91,9 @@ module.exports = Atomizr =
   # Convert Sublime Text completion into Atom snippet
   sublToAtom: ->
     editor = @workspace.getActiveTextEditor()
+    if typeof editor is "undefined"
+      @atom.beep()
+      return
     text = editor.getText()
 
     obj = CSON.parseJSONString(text)
@@ -122,6 +132,9 @@ module.exports = Atomizr =
   # Convert Atom snippet format (CSON to JSON, or vice versa)
   atomToAtom: ->
     editor = @workspace.getActiveTextEditor()
+    if typeof editor is "undefined"
+      @atom.beep()
+      return
     scope = editor.getGrammar().scopeName
 
     # Automatic conversion, based on scope
@@ -132,6 +145,9 @@ module.exports = Atomizr =
 
   csonToJson: ->
     editor = @workspace.getActiveTextEditor()
+    if typeof editor is "undefined"
+      @atom.beep()
+      return
     text = editor.getText()
 
     # Conversion
@@ -144,6 +160,9 @@ module.exports = Atomizr =
 
   jsonToCson: ->
     editor = @workspace.getActiveTextEditor()
+    if typeof editor is "undefined"
+      @atom.beep()
+      return
     text = editor.getText()
 
     # Conversion
@@ -153,4 +172,3 @@ module.exports = Atomizr =
     # Write back to editor and change scope
     editor.setText(output)
     editor.setGrammar(@grammars.grammarForScopeName('source.coffee'))
-
