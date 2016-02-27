@@ -23,14 +23,16 @@ This package is also available for [Sublime Text](https://github.com/idleberg/su
 
 ## Usage
 
-There are three basic commands available to start conversion, each available from the Command Palette or the Packages menu.
+This plugin works on active views only, so start by opening a Sublime text completion or an Atom snippet. 
+
+There are four basic commands available to start conversion, each available from the Command Palette and the Packages menu.
 
 * Automatic conversion
 * Convert Sublime Text to Atom
 * Convert Atom to Sublime Text
 * Convert Atom snippet format
 
-A shortcut to automatic conversion is also available in the context menu.
+A shortcut for automatic conversion is also available in the context menu.
 
 ### Keyboard Shortcuts
 
