@@ -54,11 +54,12 @@ module.exports = Atomizr =
       return
     text = editor.getText()
 
-    obj = CSON.parseCSONString(text)
-
-    # Valid CSON?
-    if obj instanceof Error
-      throw new SyntaxError("Invalid CSON")
+    # Validate CSON
+    try
+      obj = CSON.parseCSONString(text)
+    catch e
+      @atom.notifications.addError("Atomizr", detail: "Invalid CSON", dismissable: false)
+      return
 
     # Conversion
     sublime =
@@ -78,8 +79,10 @@ module.exports = Atomizr =
         unless typeof j.prefix is 'undefined'
           sublime.completions.push { trigger: j.prefix, contents: j.body }
 
+    # Minimum requirements
     if sublime.completions.length is 0
-      throw new RangeError("No snippets to convert")
+      @atom.notifications.addWarning("Atomizr", detail: "This doesn't seem to be a valid Atom snippet file. Aborted.", dismissable: false)
+      return
 
     # Convert to JSON
     json = JSON.stringify(sublime, null, 2)
@@ -96,11 +99,17 @@ module.exports = Atomizr =
       return
     text = editor.getText()
 
-    obj = CSON.parseJSONString(text)
+    # Validate JSON
+    try
+      obj = CSON.parseJSONString(text)
+    catch e
+      @atom.notifications.addError("Atomizr", detail: "Invalid JSON", dismissable: false)
+      return
 
-    # Valid JSON?
-    if obj instanceof Error || typeof obj.scope is 'undefined'
-      throw new SyntaxError("Invalid JSON")
+    # Minimum requirements
+    if typeof obj.scope is 'undefined' or typeof obj.completions is 'undefined'
+      @atom.notifications.addWarning("Atomizr", detail: "This doesn't seem to be a valid Sublime Text completions file. Aborted.", dismissable: false)
+      return
 
     # Conversion
     completions = {}
@@ -115,9 +124,6 @@ module.exports = Atomizr =
     for k,v of obj.completions
       unless typeof v.trigger is 'undefined'
         completions[v.trigger] = { prefix: v.trigger, body: v.contents }
-
-    if completions.length is 0
-      throw new RangeError("No completions to convert")
 
     atom = {}
     atom[scope] = completions
