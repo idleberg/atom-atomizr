@@ -1,7 +1,7 @@
 {CompositeDisposable} = require 'atom'
 
 # Dependencies
-CSON = require('CSON')
+CSON = require 'cson'
 
 module.exports = Atomizr =
   atom: atom
