@@ -11,7 +11,7 @@ module.exports = Atomizr =
 
   # https://gist.github.com/idleberg/fca633438329cc5ae327
   scopes:
-    "source.cpp": ".source.cpp"
+    "source.c++": ".source.cpp"
     "source.java-props": ".source.java-properties"
     "source.objc++": ".source.objcpp"
     "source.php": ".source.html.php"
