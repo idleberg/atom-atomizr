@@ -23,7 +23,7 @@ This package is also available for [Sublime Text](https://github.com/idleberg/su
 
 ## Usage
 
-This plugin works on active views only, so start by opening a Sublime text completion or an Atom snippet. 
+This plugin works on active views only, so start by opening a Sublime Text completion or an Atom snippet. 
 
 There are four basic commands available to start conversion, each available from the Command Palette and the Packages menu.
 
@@ -39,10 +39,14 @@ A shortcut for automatic conversion is also available in the context menu.
 
 Memorizing the keyboard shortcuts for conversion is easy. Just think of the <kbd>s</kbd> key for Sublime Text and the <kbd>a</kbd> key for Atom:
 
-* Sublime Text to Atom: <kbd>Ctrl</kbd>+<kbd>s</kbd>, <kbd>Ctrl</kbd>+<kbd>a</kbd>
+* Sublime Text to Atom: <kbd>Ctrl</kbd>+<kbd>s</kbd>, <kbd>Ctrl</kbd>+<kbd>a</kbd> (for completions)
 * Atom to Sublime Text: hold <kbd>Ctrl</kbd>+<kbd>a</kbd>, <kbd>Ctrl</kbd>+<kbd>s</kbd>
 
-For automatic conversion, press <kbd>Ctrl</kbd>+<kbd>a</kbd> twice. To switch the Atom snippet from CSON to JSON (or vice versa), press <kbd>Ctrl</kbd>+<kbd>c</kbd> twice.
+For automatic conversion, press <kbd>Ctrl</kbd>+<kbd>c</kbd> twice. To switch the Atom snippet from CSON to JSON (or vice versa), press <kbd>Ctrl</kbd>+<kbd>a</kbd> twice.
+
+## Grammar
+
+To ensure automatic conversion to work more reliably, this package installs grammar for a variety of Sublime Text files. As a side effect, these files get proper syntax highlighting.
 
 ## License
 
