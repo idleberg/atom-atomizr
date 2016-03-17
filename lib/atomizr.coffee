@@ -65,7 +65,7 @@ module.exports = Atomizr =
     try
       obj = parseCson.parse(text)
     catch e
-      @atom.notifications.addError("Atomizr", detail: e, dismissable: false)
+      @atom.notifications.addError("Atomizr", detail: e, dismissable: true)
       return
 
     # Conversion
@@ -110,7 +110,7 @@ module.exports = Atomizr =
     try
       obj = parseJson(text)
     catch e
-      @atom.notifications.addError("Atomizr", detail: e, dismissable: false)
+      @atom.notifications.addError("Atomizr", detail: e, dismissable: true)
       return
 
     # Minimum requirements
@@ -212,7 +212,7 @@ module.exports = Atomizr =
     try
       input = parseCson.parse(text)
     catch e
-      @atom.notifications.addError("Atomizr", detail: e, dismissable: false)
+      @atom.notifications.addError("Atomizr", detail: e, dismissable: true)
       return
 
     output = CSON.createJSONString(input)
@@ -232,7 +232,7 @@ module.exports = Atomizr =
     try
       input = parseJson(text)
     catch e
-      @atom.notifications.addError("Atomizr", detail: e, dismissable: false)
+      @atom.notifications.addError("Atomizr", detail: e, dismissable: true)
       return
 
     output = CSON.createCSONString(input)
