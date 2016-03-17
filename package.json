@@ -18,7 +18,7 @@
     "atom-workspace": [
       "atomizr:automatic-conversion",
       "atomizr:convert-atom-to-sublime-text",
-      "atomizr:convert-sublime-text-to-atom",
+      "atomizr:convert-sublime-text-completions-to-atom",
       "atomizr:convert-sublime-text-snippet-to-atom",
       "atomizr:convert-atom-snippet-format"
     ]
