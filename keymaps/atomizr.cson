@@ -1,5 +1,5 @@
 'atom-text-editor':
   'ctrl-a ctrl-a': 'atomizr:automatic-conversion'
   'ctrl-a ctrl-s': 'atomizr:convert-atom-to-sublime-text'
-  'ctrl-s ctrl-a': 'atomizr:convert-sublime-text-to-atom'
+  'ctrl-s ctrl-a': 'atomizr:convert-sublime-text-completions-to-atom'
   'ctrl-c ctrl-c': 'atomizr:convert-atom-format'
