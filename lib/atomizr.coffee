@@ -172,7 +172,7 @@ module.exports = Atomizr =
         scope = atom
         break
       else
-        scope = "." + obj.scope   
+        scope = "." + obj.scope
 
     snippet = {}
     snippet[obj.tabTrigger[0]] = { prefix: obj.tabTrigger[0], body: obj.content[0].trim() }
