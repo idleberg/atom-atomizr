@@ -2,6 +2,7 @@
 
 # Dependencies
 CSON = require 'cson'
+{parseString} = require 'xml2js'
 
 module.exports = Atomizr =
   atom: atom
@@ -28,6 +29,7 @@ module.exports = Atomizr =
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:automatic-conversion': => @autoConvert()
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-atom-to-sublime-text': => @atomToSubl()
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-sublime-text-to-atom': => @sublToAtom()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-sublime-text-snippet-to-atom': => @sublSnipToAtom()
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-atom-format': => @atomToAtom()
 
   deactivate: ->
@@ -45,6 +47,8 @@ module.exports = Atomizr =
       @atomToSubl()
     else if scope is "source.json.subl"
       @sublToAtom()
+    else if scope is "text.xml.subl"
+      @sublSnipToAtom()
 
   # Convert Atom snippet into Sublime Text completion
   atomToSubl: ->
@@ -69,11 +73,11 @@ module.exports = Atomizr =
     for k,v of obj
 
       # Get scope, convert if necessary
+      sublime.scope = k.substring(1)
       for subl,atom of @scopes
         if k is atom
           sublime.scope = subl
-        else
-          sublime.scope = k.substring(1)
+          
 
       for i, j of v
         unless typeof j.prefix is 'undefined'
@@ -81,7 +85,7 @@ module.exports = Atomizr =
 
     # Minimum requirements
     if sublime.completions.length is 0
-      @atom.notifications.addWarning("Atomizr", detail: "This doesn't seem to be a valid Atom snippet file. Aborted.", dismissable: false)
+      @atom.notifications.addWarning("Atomizr", detail: "This doesn't seem to be a valid Atom snippet file. Aborting.", dismissable: false)
       return
 
     # Convert to JSON
@@ -108,7 +112,7 @@ module.exports = Atomizr =
 
     # Minimum requirements
     if typeof obj.scope is 'undefined' or typeof obj.completions is 'undefined'
-      @atom.notifications.addWarning("Atomizr", detail: "This doesn't seem to be a valid Sublime Text completions file. Aborted.", dismissable: false)
+      @atom.notifications.addWarning("Atomizr", detail: "This doesn't seem to be a valid Sublime Text completions file. Aborting.", dismissable: false)
       return
 
     # Conversion
@@ -118,6 +122,7 @@ module.exports = Atomizr =
     for subl,atom of @scopes
       if obj.scope is subl
         scope = atom
+        break
       else
         scope = "." + obj.scope
 
@@ -127,6 +132,50 @@ module.exports = Atomizr =
 
     atom = {}
     atom[scope] = completions
+
+    # Convert to CSON
+    cson = CSON.createCSONString(atom)
+
+    # Write back to editor and change scope
+    editor.setText(cson)
+    editor.setGrammar(@grammars.grammarForScopeName('source.coffee'))
+
+  # Convert Sublime Text snippet into Atom snippet
+  sublSnipToAtom: ->
+    editor = @workspace.getActiveTextEditor()
+    if typeof editor is "undefined"
+      @atom.beep()
+      return
+    text = editor.getText()
+
+    obj = null
+
+    # Validate XML
+    try
+      parseString text, (e, result) ->
+        obj = result.snippet
+    catch e
+      @atom.notifications.addError("Atomizr", detail: "Invalid XML", dismissable: false)
+      return
+
+    # Minimum requirements
+    if typeof obj.scope is 'undefined' or typeof obj.content is 'undefined'
+      @atom.notifications.addWarning("Atomizr", detail: "This doesn't seem to be a valid Sublime Text snippet file. Aborting.", dismissable: false)
+      return
+
+    # Get scope, convert if necessary
+    for subl,atom of @scopes
+      if obj.scope.toString() is subl
+        scope = atom
+        break
+      else
+        scope = "." + obj.scope   
+
+    snippet = {}
+    snippet[obj.tabTrigger[0]] = { prefix: obj.tabTrigger[0], body: obj.content[0].trim() }
+
+    atom = {}
+    atom[scope] = snippet
 
     # Convert to CSON
     cson = CSON.createCSONString(atom)
