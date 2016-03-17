@@ -21,7 +21,11 @@
           'command': 'atomizr:convert-atom-to-sublime-text'
         },
         {
-          'label': 'Convert Sublime Text to Atom'
+          'label': 'Convert Sublime Text to Atom (completion)'
+          'command': 'atomizr:convert-sublime-text-to-atom'
+        }
+        {
+          'label': 'Convert Sublime Text to Atom (snippet)'
           'command': 'atomizr:convert-sublime-text-to-atom'
         }
         { 'type': 'separator' },

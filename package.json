@@ -19,6 +19,7 @@
       "atomizr:automatic-conversion",
       "atomizr:convert-atom-to-sublime-text",
       "atomizr:convert-sublime-text-to-atom",
+      "atomizr:convert-sublime-text-snippet-to-atom",
       "atomizr:convert-atom-snippet-format"
     ]
   },
@@ -28,7 +29,8 @@
     "atom": ">=1.0.0 <2.0.0"
   },
   "dependencies": {
-    "cson": "^3.0.2"
+    "cson": "^3.0.2",
+    "xml2js": "^0.4.16"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
