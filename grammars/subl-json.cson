@@ -1,4 +1,3 @@
-# Lets add all Sublime Text JSON files, not just those support by the package
 fileTypes: [
   "sublime-build"
   "sublime-commands"
