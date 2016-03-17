@@ -1,7 +1,9 @@
 {CompositeDisposable} = require 'atom'
 
-# Dependencies
+# 3rd-party dependencies
 CSON = require 'cson'
+parseCson = require 'cson-parser'
+parseJson = require 'parse-json'
 {parseString} = require 'xml2js'
 
 module.exports = Atomizr =
@@ -10,8 +12,9 @@ module.exports = Atomizr =
   grammars: atom.grammars
   subscriptions: null
 
+  # Replace scope-name exceptions
   # https://gist.github.com/idleberg/fca633438329cc5ae327
-  scopes:
+  exceptions:
     "source.c++": ".source.cpp"
     "source.java-props": ".source.java-properties"
     "source.objc++": ".source.objcpp"
@@ -60,9 +63,9 @@ module.exports = Atomizr =
 
     # Validate CSON
     try
-      obj = CSON.parseCSONString(text)
+      obj = parseCson.parse(text)
     catch e
-      @atom.notifications.addError("Atomizr", detail: "Invalid CSON", dismissable: false)
+      @atom.notifications.addError("Atomizr", detail: e, dismissable: false)
       return
 
     # Conversion
@@ -74,7 +77,7 @@ module.exports = Atomizr =
 
       # Get scope, convert if necessary
       sublime.scope = k.substring(1)
-      for subl,atom of @scopes
+      for subl,atom of @exceptions
         if k is atom
           sublime.scope = subl
           
@@ -105,9 +108,9 @@ module.exports = Atomizr =
 
     # Validate JSON
     try
-      obj = CSON.parseJSONString(text)
+      obj = parseJson(text)
     catch e
-      @atom.notifications.addError("Atomizr", detail: "Invalid JSON", dismissable: false)
+      @atom.notifications.addError("Atomizr", detail: e, dismissable: false)
       return
 
     # Minimum requirements
@@ -119,7 +122,7 @@ module.exports = Atomizr =
     completions = {}
 
     # Get scope, convert if necessary
-    for subl,atom of @scopes
+    for subl,atom of @exceptions
       if obj.scope is subl
         scope = atom
         break
@@ -155,7 +158,7 @@ module.exports = Atomizr =
       parseString text, (e, result) ->
         obj = result.snippet
     catch e
-      @atom.notifications.addError("Atomizr", detail: "Invalid XML", dismissable: false)
+      @atom.notifications.addError("Atomizr", detail: "Invalid XML, aborting", dismissable: false)
       return
 
     # Minimum requirements
@@ -164,7 +167,7 @@ module.exports = Atomizr =
       return
 
     # Get scope, convert if necessary
-    for subl,atom of @scopes
+    for subl,atom of @exceptions
       if obj.scope.toString() is subl
         scope = atom
         break
@@ -206,7 +209,12 @@ module.exports = Atomizr =
     text = editor.getText()
 
     # Conversion
-    input = CSON.parseCSONString(text)
+    try
+      input = parseCson.parse(text)
+    catch e
+      @atom.notifications.addError("Atomizr", detail: e, dismissable: false)
+      return
+
     output = CSON.createJSONString(input)
 
     # Write back to editor and change scope
@@ -221,7 +229,12 @@ module.exports = Atomizr =
     text = editor.getText()
 
     # Conversion
-    input = CSON.parseJSONString(text)
+    try
+      input = parseJson(text)
+    catch e
+      @atom.notifications.addError("Atomizr", detail: e, dismissable: false)
+      return
+
     output = CSON.createCSONString(input)
 
     # Write back to editor and change scope
