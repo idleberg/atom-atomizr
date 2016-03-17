@@ -1,0 +1,10 @@
+fileTypes: [
+  "sublime-snippet"
+]
+name: "XML (Sublime Text)"
+patterns: [
+  {
+    include: "text.xml"
+  }
+]
+scopeName: "text.xml.subl"

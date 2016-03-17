@@ -1,0 +1,10 @@
+fileTypes: [
+  "sublime-syntax"
+]
+name: "YAML (Sublime Text)"
+patterns: [
+  {
+    include: "source.yaml"
+  }
+]
+scopeName: "source.yaml.subl"
