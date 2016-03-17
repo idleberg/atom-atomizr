@@ -28,7 +28,8 @@ This plugin works on active views only, so start by opening a Sublime text compl
 There are four basic commands available to start conversion, each available from the Command Palette and the Packages menu.
 
 * Automatic conversion
-* Convert Sublime Text to Atom
+* Convert Sublime Text completions to Atom
+* Convert Sublime Text snippet to Atom
 * Convert Atom to Sublime Text
 * Convert Atom snippet format
 
