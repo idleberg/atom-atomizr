@@ -37,12 +37,12 @@ A shortcut for automatic conversion is also available in the context menu.
 
 ### Keyboard Shortcuts
 
-Memorizing the keyboard shortcuts for conversion is easy. Just think of the <kbd>s</kbd> key for Sublime Text and the <kbd>a</kbd> key for Atom:
+Memorizing the keyboard shortcuts for conversion is easy. Just think of the <kbd>S</kbd> key for Sublime Text and the <kbd>A</kbd> key for Atom:
 
-* Sublime Text to Atom: <kbd>Ctrl</kbd>+<kbd>s</kbd>, <kbd>Ctrl</kbd>+<kbd>a</kbd> (for completions)
-* Atom to Sublime Text: hold <kbd>Ctrl</kbd>+<kbd>a</kbd>, <kbd>Ctrl</kbd>+<kbd>s</kbd>
+* Sublime Text to Atom (S to A): <kbd>Ctrl</kbd>+<kbd>S</kbd>, <kbd>Ctrl</kbd>+<kbd>A</kbd>
+* Atom to Sublime Text (A to S): hold <kbd>Ctrl</kbd>+<kbd>A</kbd>, <kbd>Ctrl</kbd>+<kbd>S</kbd>
 
-For automatic conversion, press <kbd>Ctrl</kbd>+<kbd>c</kbd> twice. To switch the Atom snippet from CSON to JSON (or vice versa), press <kbd>Ctrl</kbd>+<kbd>a</kbd> twice.
+For automatic conversion, press <kbd>Ctrl</kbd>+<kbd>C</kbd> twice. To switch the Atom snippet from CSON to JSON (or vice versa), press <kbd>Ctrl</kbd>+<kbd>A</kbd> twice.
 
 ## Grammar
 
