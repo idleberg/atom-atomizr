@@ -23,9 +23,9 @@ This package is also available for [Sublime Text](https://github.com/idleberg/su
 
 ## Usage
 
-This plugin works on active views only, so start by opening a Sublime Text completion or an Atom snippet. 
+This plugin works on active views only, so start by opening a Sublime Text completion or an Atom snippet.
 
-There are four basic commands available to start conversion, each available from the Command Palette and the Packages menu.
+There are four basic commands available to start conversion, each available from the [Command Palette](http://flight-manual.atom.io/getting-started/sections/atom-basics/#_command_palette) and the Packages menu.
 
 * Automatic conversion
 * Convert Sublime Text completions to Atom
