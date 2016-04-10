@@ -174,6 +174,9 @@ module.exports = Atomizr =
       else
         scope = "." + obj.scope
 
+    if obj.description[0]
+      console.log obj.description[0]
+
     snippet = {}
     snippet[obj.tabTrigger[0]] = { prefix: obj.tabTrigger[0], body: obj.content[0].trim() }
 
