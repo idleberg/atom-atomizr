@@ -76,11 +76,11 @@ module.exports = Atomizr =
     for k,v of obj
 
       # Get scope, convert if necessary
-      sublime.scope = k.substring(1)
       for subl,atom of @exceptions
         if k is atom
           sublime.scope = subl
-          
+        else
+          sublime.scope = k.substring(1)
 
       for i, j of v
         unless typeof j.prefix is 'undefined'
