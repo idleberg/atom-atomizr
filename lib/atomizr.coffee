@@ -177,7 +177,7 @@ module.exports = Atomizr =
     if obj.description
       description = obj.description
     else
-      description = tabTrigger[0]
+      description = obj.tabTrigger
 
     snippet = {}
     snippet[obj.description] = { prefix: obj.tabTrigger[0], body: obj.content[0].trim() }
