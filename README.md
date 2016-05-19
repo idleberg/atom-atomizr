@@ -28,7 +28,7 @@ $ cd %USERPROFILE%\.atom\packages
 $ cd ~/.atom/packages/
 ```
 
-Clone the repository as:
+Clone the repository as `atomizr`:
 
 `$ git clone https://github.com/idleberg/atom-atomizr atomizr`
 
