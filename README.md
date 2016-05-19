@@ -12,14 +12,25 @@ This package is also available for [Sublime Text](https://github.com/idleberg/su
 
 ## Installation
 
-### apm
+Install `atomizr` from Atom's [Package Manager](http://flight-manual.atom.io/using-atom/sections/atom-packages/) or the command-line equivalent:
 
-* Install package `apm install atomizr` (or use the GUI)
+`$ apm install atomizr`
 
 ### GitHub
 
-1. Change directory `cd ~/.atom/packages/`
-2. Clone repository `git clone https://github.com/idleberg/atom-atomizr atomizr`
+Change to your Atom packages directory:
+
+```bash
+# Windows
+$ cd %USERPROFILE%\.atom\packages
+
+# Mac OS X & Linux
+$ cd ~/.atom/packages/
+```
+
+Clone the repository as:
+
+`$ git clone https://github.com/idleberg/atom-atomizr atomizr`
 
 ## Usage
 
