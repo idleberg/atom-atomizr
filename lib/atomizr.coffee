@@ -37,6 +37,7 @@ module.exports = Atomizr =
 
   deactivate: ->
     @subscriptions.dispose()
+    @subscriptions = null
 
   # Automatic conversion, based on scope
   autoConvert: ->
