@@ -11,6 +11,7 @@ module.exports = Atomizr =
   workspace: atom.workspace
   grammars: atom.grammars
   subscriptions: null
+  meta: "Generated with Atomizr – https://atom.io/packages/atomizr"
 
   # Replace scope-name exceptions
   # https://gist.github.com/idleberg/fca633438329cc5ae327
@@ -71,6 +72,7 @@ module.exports = Atomizr =
 
     # Conversion
     sublime =
+      meta: @meta
       scope: null
       completions: []
 
@@ -134,15 +136,11 @@ module.exports = Atomizr =
       unless typeof v.trigger is 'undefined'
         completions[v.trigger] = { prefix: v.trigger, body: v.contents }
 
-    atom = {}
+    atom = { }
     atom[scope] = completions
 
     # Convert to CSON
-    cson = CSON.createCSONString(atom)
-
-    # Write back to editor and change scope
-    editor.setText(cson)
-    editor.setGrammar(@grammars.grammarForScopeName('source.coffee'))
+    @makeCoffee(editor, atom)
 
   # Convert Sublime Text snippet into Atom snippet
   sublSnipToAtom: ->
@@ -187,11 +185,7 @@ module.exports = Atomizr =
     atom[scope] = snippet
 
     # Convert to CSON
-    cson = CSON.createCSONString(atom)
-
-    # Write back to editor and change scope
-    editor.setText(cson)
-    editor.setGrammar(@grammars.grammarForScopeName('source.coffee'))
+    @makeCoffee(editor, atom)
 
   # Convert Atom snippet format (CSON to JSON, or vice versa)
   atomToAtom: ->
@@ -241,8 +235,12 @@ module.exports = Atomizr =
       @atom.notifications.addError("Atomizr", detail: e, dismissable: true)
       return
 
+    # Convert to CSON
+    @makeCoffee(editor, input)
+
+  makeCoffee: (editor, input) ->
     output = CSON.createCSONString(input)
 
     # Write back to editor and change scope
-    editor.setText(output)
+    editor.setText("# #{@meta}\n#{output}")
     editor.setGrammar(@grammars.grammarForScopeName('source.coffee'))
