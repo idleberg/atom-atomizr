@@ -24,13 +24,15 @@ Change to your Atom packages directory:
 # Windows
 $ cd %USERPROFILE%\.atom\packages
 
-# Mac OS X & Linux
+# Linux & macOS
 $ cd ~/.atom/packages/
 ```
 
 Clone the repository as `atomizr`:
 
-`$ git clone https://github.com/idleberg/atom-atomizr atomizr`
+```bash
+$ git clone https://github.com/idleberg/atom-atomizr atomizr
+```
 
 ## Usage
 
