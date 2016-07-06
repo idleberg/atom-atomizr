@@ -1,4 +1,5 @@
 fileTypes: [
+  "PLIST-sublime-syntax"
   "sublime-snippet"
 ]
 name: "XML (Sublime Text)"
