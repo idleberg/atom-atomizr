@@ -17,4 +17,29 @@ patterns: [
     include: "source.json"
   }
 ]
+# https://github.com/clintwood/language-json-comments
+repository:
+  'comments':
+    'patterns': [
+      {
+        'match': '/{2}.*'
+        'name': 'comment.single.subl'
+      }
+      {
+        'begin': '/\\*\\*(?!/)'
+        'captures':
+          '0':
+            'name': 'punctuation.definition.comment.subl'
+        'end': '\\*/'
+        'name': 'comment.block.documentation.subl'
+      }
+      {
+        'begin': '/\\*'
+        'captures':
+          '0':
+            'name': 'punctuation.definition.comment.subl'
+        'end': '\\*/'
+        'name': 'comment.block.subl'
+      }
+    ]
 scopeName: "source.json.subl"
