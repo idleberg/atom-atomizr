@@ -20,7 +20,7 @@
       "atomizr:convert-atom-to-sublime-text",
       "atomizr:convert-sublime-text-completions-to-atom",
       "atomizr:convert-sublime-text-snippet-to-atom",
-      "atomizr:convert-atom-snippet-format"
+      "atomizr:toggle-atom-snippet-format"
     ]
   },
   "repository": {

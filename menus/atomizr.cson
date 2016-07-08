@@ -30,8 +30,8 @@
         }
         { 'type': 'separator' },
         {
-          'label': 'Convert Atom snippet format (CSON↔JSON)'
-          'command': 'atomizr:convert-atom-format'
+          'label': 'Toggle Atom snippet format (CSON↔JSON)'
+          'command': 'atomizr:toggle-atom-snippet-format'
         }
       ]
     ]
