@@ -8,7 +8,7 @@
 
 Converts Sublime Text completions into Atom snippets, and vice versa.
 
-This package is also available for [Sublime Text](https://github.com/idleberg/sublime-atomizr) and as an even more powerful [Ruby script](https://github.com/idleberg/atomizr).
+This package is also available for [Sublime Text](https://github.com/idleberg/sublime-atomizr) and as an even more powerful [Ruby script](https://github.com/idleberg/ruby-atomizr).
 
 ## Installation
 
@@ -57,7 +57,7 @@ Memorizing the keyboard shortcuts for conversion is easy. Just think of the <kbd
 * Sublime Text to Atom (S to A): <kbd>Ctrl</kbd>+<kbd>S</kbd>, <kbd>Ctrl</kbd>+<kbd>A</kbd>
 * Atom to Sublime Text (A to S): <kbd>Ctrl</kbd>+<kbd>A</kbd>, <kbd>Ctrl</kbd>+<kbd>S</kbd>
 
-For automatic conversion, press <kbd>Ctrl</kbd>+<kbd>C</kbd> twice. To switch the Atom snippet from CSON to JSON (or vice versa), press <kbd>Ctrl</kbd>+<kbd>A</kbd> twice.
+For automatic conversion, press <kbd>Ctrl</kbd>+<kbd>C</kbd> twice. To toggle the Atom snippet format (CSON↔JSON), press <kbd>Ctrl</kbd>+<kbd>A</kbd> twice.
 
 ## Grammar
 
