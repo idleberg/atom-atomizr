@@ -44,7 +44,7 @@ There are four basic commands available to start conversion, each available from
 * Convert Sublime Text completions to Atom
 * Convert Sublime Text snippet to Atom
 * Convert Atom to Sublime Text
-* Convert Atom snippet format
+* Toggle Atom snippet format
 
 A shortcut for automatic conversion is also available in the context menu.
 
