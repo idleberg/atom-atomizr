@@ -1,5 +1,7 @@
 fileTypes: [
   "sublime-syntax"
+  "YAML-tmLanguage"
+  "YAML-tmTheme"
 ]
 name: "YAML (Sublime Text)"
 patterns: [

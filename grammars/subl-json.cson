@@ -1,5 +1,7 @@
 fileTypes: [
   "JSON-sublime-syntax"
+  "JSON-tmLanguage"
+  "JSON-tmTheme"
   "sublime-build"
   "sublime-commands"
   "sublime-completions"
