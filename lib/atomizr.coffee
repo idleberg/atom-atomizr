@@ -37,7 +37,7 @@ module.exports = Atomizr =
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:toggle-atom-snippet-format': => @atomToAtom()
 
   deactivate: ->
-    @subscriptions.dispose()
+    @subscriptions?.dispose()
     @subscriptions = null
 
   # Automatic conversion, based on scope
