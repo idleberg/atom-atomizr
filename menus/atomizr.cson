@@ -21,17 +21,21 @@
           'command': 'atomizr:convert-atom-to-sublime-text'
         },
         {
+          'label': 'Convert Sublime Text to Atom'
+          'command': 'atomizr:convert-sublime-text-to-atom'
+        }
+        { 'type': 'separator' },
+        {
+          'label': 'Toggle Atom snippet format (CSON↔JSON)'
+          'command': 'atomizr:toggle-atom-snippet-format'
+        }
+        {
           'label': 'Convert Sublime Text to Atom (completions)'
           'command': 'atomizr:convert-sublime-text-completions-to-atom'
         }
         {
           'label': 'Convert Sublime Text to Atom (snippet)'
           'command': 'atomizr:convert-sublime-text-snippet-to-atom'
-        }
-        { 'type': 'separator' },
-        {
-          'label': 'Toggle Atom snippet format (CSON↔JSON)'
-          'command': 'atomizr:toggle-atom-snippet-format'
         }
       ]
     ]

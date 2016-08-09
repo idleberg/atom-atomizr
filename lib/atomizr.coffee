@@ -32,8 +32,9 @@ module.exports = Atomizr =
     # Register commands
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:automatic-conversion': => @autoConvert()
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-atom-to-sublime-text': => @atomToSubl()
-    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-sublime-text-completions-to-atom': => @sublToAtom()
-    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-sublime-text-snippet-to-atom': => @sublSnipToAtom()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-sublime-text-to-atom': => @sublToAtom()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-sublime-text-completions-to-atom': => @sublCompletionsToAtom()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-sublime-text-snippet-to-atom': => @sublSnippetToAtom()
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:toggle-atom-snippet-format': => @atomToAtom()
 
   deactivate: ->
@@ -50,9 +51,9 @@ module.exports = Atomizr =
     if scope is "source.coffee"
       @atomToSubl()
     else if scope is "source.json.subl"
-      @sublToAtom()
+      @sublCompletionsToAtom()
     else if scope is "text.xml.subl"
-      @sublSnipToAtom()
+      @sublSnippetToAtom()
 
   # Convert Atom snippet into Sublime Text completion
   atomToSubl: ->
@@ -85,7 +86,7 @@ module.exports = Atomizr =
           sublime.scope = k.substring(1)
 
       for i, j of v
-        unless typeof j.prefix is 'undefined'
+        if j.prefix?
           j.body = @trimTabStop(j.body)
           sublime.completions.push { trigger: j.prefix, contents: j.body }
 
@@ -107,6 +108,19 @@ module.exports = Atomizr =
     unless editor?
       @atom.beep()
       return
+    scope = editor.getGrammar().scopeName
+
+    if scope is "source.json.subl"
+      @sublCompletionsToAtom()
+    else if scope is "text.xml.subl"
+      @sublSnippetToAtom()
+
+  # Convert Sublime Text completion into Atom snippet
+  sublCompletionsToAtom: ->
+    editor = @workspace.getActiveTextEditor()
+    unless editor?
+      @atom.beep()
+      return
     text = editor.getText()
 
     # Validate JSON
@@ -117,7 +131,7 @@ module.exports = Atomizr =
       return
 
     # Minimum requirements
-    if typeof obj.scope is 'undefined' or typeof obj.completions is 'undefined'
+    unless obj.scope? or obj.completions?
       @atom.notifications.addWarning("Atomizr", detail: "This doesn't seem to be a valid Sublime Text completions file. Aborting.", dismissable: false)
       return
 
@@ -133,7 +147,7 @@ module.exports = Atomizr =
         scope = "." + obj.scope
 
     for k,v of obj.completions
-      unless typeof v.trigger is 'undefined'
+      if v.trigger?
         v.contents = @appendTabStop(v.contents)
         completions[v.trigger] = { prefix: v.trigger, body: v.contents }
 
@@ -144,7 +158,7 @@ module.exports = Atomizr =
     @makeCoffee(editor, atom)
 
   # Convert Sublime Text snippet into Atom snippet
-  sublSnipToAtom: ->
+  sublSnippetToAtom: ->
     editor = @workspace.getActiveTextEditor()
     unless editor?
       @atom.beep()
@@ -162,7 +176,7 @@ module.exports = Atomizr =
       return
 
     # Minimum requirements
-    if typeof obj.scope is 'undefined' or typeof obj.content is 'undefined'
+    unless obj.scope? or obj.content?
       @atom.notifications.addWarning("Atomizr", detail: "This doesn't seem to be a valid Sublime Text snippet file. Aborting.", dismissable: false)
       return
 
