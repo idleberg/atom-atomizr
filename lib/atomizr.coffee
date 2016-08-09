@@ -37,13 +37,12 @@ module.exports = Atomizr =
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:toggle-atom-snippet-format': => @atomToAtom()
 
   deactivate: ->
-    @subscriptions?.dispose()
-    @subscriptions = null
+    @subscriptions.dispose()
 
   # Automatic conversion, based on scope
   autoConvert: ->
     editor = @workspace.getActiveTextEditor()
-    if typeof editor is "undefined"
+    unless editor?
       @atom.beep()
       return
     scope = editor.getGrammar().scopeName
@@ -58,7 +57,7 @@ module.exports = Atomizr =
   # Convert Atom snippet into Sublime Text completion
   atomToSubl: ->
     editor = @workspace.getActiveTextEditor()
-    if typeof editor is "undefined"
+    unless editor?
       @atom.beep()
       return
     text = editor.getText()
@@ -87,6 +86,7 @@ module.exports = Atomizr =
 
       for i, j of v
         unless typeof j.prefix is 'undefined'
+          j.body = @trimTabStop(j.body)
           sublime.completions.push { trigger: j.prefix, contents: j.body }
 
     # Minimum requirements
@@ -104,7 +104,7 @@ module.exports = Atomizr =
   # Convert Sublime Text completion into Atom snippet
   sublToAtom: ->
     editor = @workspace.getActiveTextEditor()
-    if typeof editor is "undefined"
+    unless editor?
       @atom.beep()
       return
     text = editor.getText()
@@ -134,6 +134,7 @@ module.exports = Atomizr =
 
     for k,v of obj.completions
       unless typeof v.trigger is 'undefined'
+        v.contents = @appendTabStop(v.contents)
         completions[v.trigger] = { prefix: v.trigger, body: v.contents }
 
     atom = { }
@@ -145,7 +146,7 @@ module.exports = Atomizr =
   # Convert Sublime Text snippet into Atom snippet
   sublSnipToAtom: ->
     editor = @workspace.getActiveTextEditor()
-    if typeof editor is "undefined"
+    unless editor?
       @atom.beep()
       return
     text = editor.getText()
@@ -178,8 +179,10 @@ module.exports = Atomizr =
     else
       description = obj.tabTrigger
 
+    obj.content = @appendTabStop(obj.content[0].trim())
+
     snippet = {}
-    snippet[obj.description] = { prefix: obj.tabTrigger[0], body: obj.content[0].trim() }
+    snippet[obj.description] = { prefix: obj.tabTrigger[0], body: obj.content }
 
     atom = {}
     atom[scope] = snippet
@@ -190,7 +193,7 @@ module.exports = Atomizr =
   # Convert Atom snippet format (CSON to JSON, or vice versa)
   atomToAtom: ->
     editor = @workspace.getActiveTextEditor()
-    if typeof editor is "undefined"
+    unless editor?
       @atom.beep()
       return
     scope = editor.getGrammar().scopeName
@@ -203,7 +206,7 @@ module.exports = Atomizr =
 
   csonToJson: ->
     editor = @workspace.getActiveTextEditor()
-    if typeof editor is "undefined"
+    unless editor?
       @atom.beep()
       return
     text = editor.getText()
@@ -223,7 +226,7 @@ module.exports = Atomizr =
 
   jsonToCson: ->
     editor = @workspace.getActiveTextEditor()
-    if typeof editor is "undefined"
+    unless editor?
       @atom.beep()
       return
     text = editor.getText()
@@ -237,6 +240,34 @@ module.exports = Atomizr =
 
     # Convert to CSON
     @makeCoffee(editor, input)
+
+  appendTabStop: (input) ->
+    unless input.match(/\$\d+$/g) is null
+      # nothing to do here
+      return input
+
+    re  = /\${?(\d+)/g;
+    tabStops = [];
+
+    while (m = re.exec(input)) != null
+      tabStops.push m[1]
+
+    # no tab-stops
+    unless tabStops.length
+      return "#{input}$1"
+    
+    tabStops = tabStops.sort()
+    highest = parseInt(tabStops[tabStops.length - 1]) + 1
+
+    return "#{input}$#{highest}"
+
+  trimTabStop: (input) ->
+
+    if input.match(/\$\d+$/g) is null
+      # nothing to do here
+      return input
+
+    return input.replace(/\$\d+$/g, "")
 
   makeCoffee: (editor, input) ->
     output = CSON.createCSONString(input)
