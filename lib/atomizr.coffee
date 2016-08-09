@@ -87,7 +87,7 @@ module.exports = Atomizr =
 
       for i, j of v
         if j.prefix?
-          j.body = @trimTabStop(j.body)
+          j.body = @removeTrailingTabstops(j.body)
           sublime.completions.push { trigger: j.prefix, contents: j.body }
 
     # Minimum requirements
@@ -148,7 +148,7 @@ module.exports = Atomizr =
 
     for k,v of obj.completions
       if v.trigger?
-        v.contents = @appendTabStop(v.contents)
+        v.contents = @addTrailingTabstops(v.contents)
         completions[v.trigger] = { prefix: v.trigger, body: v.contents }
 
     atom = { }
@@ -193,7 +193,7 @@ module.exports = Atomizr =
     else
       description = obj.tabTrigger
 
-    obj.content = @appendTabStop(obj.content[0].trim())
+    obj.content = @addTrailingTabstops(obj.content[0].trim())
 
     snippet = {}
     snippet[obj.description] = { prefix: obj.tabTrigger[0], body: obj.content }
@@ -255,7 +255,7 @@ module.exports = Atomizr =
     # Convert to CSON
     @makeCoffee(editor, input)
 
-  appendTabStop: (input) ->
+  addTrailingTabstops: (input) ->
     unless input.match(/\$\d+$/g) is null
       # nothing to do here
       return input
@@ -275,7 +275,7 @@ module.exports = Atomizr =
 
     return "#{input}$#{highest}"
 
-  trimTabStop: (input) ->
+  removeTrailingTabstops: (input) ->
 
     if input.match(/\$\d+$/g) is null
       # nothing to do here
