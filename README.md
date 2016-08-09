@@ -38,12 +38,13 @@ $ git clone https://github.com/idleberg/atom-atomizr atomizr
 
 This plugin works on active views only, so start by opening a Sublime Text completion or an Atom snippet.
 
-There are four basic commands available to start conversion, each available from the [Command Palette](http://flight-manual.atom.io/getting-started/sections/atom-basics/#_command_palette) and the Packages menu.
+There are several commands available to start conversion, each available from the [Command Palette](http://flight-manual.atom.io/getting-started/sections/atom-basics/#_command_palette) and the Packages menu.
 
 * Automatic conversion
+* Convert Sublime Text to Atom
+* Convert Atom to Sublime Text
 * Convert Sublime Text completions to Atom
 * Convert Sublime Text snippet to Atom
-* Convert Atom to Sublime Text
 * Toggle Atom snippet format
 
 A shortcut for automatic conversion is also available in the context menu.
