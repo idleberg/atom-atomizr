@@ -1,9 +1,9 @@
-'.platform-darwin atom-text-editor':
+'.platform-darwin atom-text-editor, .platform-darwin .tree-view':
   'ctrl-c ctrl-c': 'atomizr:automatic-conversion'
   'ctrl-a ctrl-a': 'atomizr:toggle-atom-snippet-format'
   'ctrl-a ctrl-s': 'atomizr:convert-atom-to-sublime-text'
   'ctrl-s ctrl-a': 'atomizr:convert-sublime-text-to-atom'
-'.platform-linux atom-text-editor, .platform-win32 atom-text-editor':
+'.platform-linux atom-text-editor, .platform-linux .tree-view, .platform-win32 atom-text-editor, .platform-win32 .tree-view':
   'ctrl-alt-c ctrl-alt-c': 'atomizr:automatic-conversion'
   'ctrl-alt-a ctrl-alt-a': 'atomizr:toggle-atom-snippet-format'
   'ctrl-alt-a ctrl-alt-s': 'atomizr:convert-atom-to-sublime-text'
