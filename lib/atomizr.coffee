@@ -175,7 +175,7 @@ module.exports = Atomizr =
         unless v.trigger.indexOf("\t") is -1
           tabs = v.trigger.split("\t")
 
-          @atom.notifications.addWarning("The trigger `#{v.trigger}` requires inspection", detail: "Contains multiple tab-stops, where it should only be one. You might want to look into that!", dismissable: true) if tabs.length > 2
+          @atom.notifications.addWarning("Atomizr", detail: "Conversion aborted, trigger '#{v.trigger}' contains multiple tabs", dismissable: true) if tabs.length > 2
 
           trigger = tabs[0] 
           description = tabs.slice(-1).pop()
