@@ -1,12 +1,20 @@
 {CompositeDisposable} = require 'atom'
 
 # 3rd-party dependencies
+fs = require 'fs'
+path = require 'path'
 CSON = require 'cson'
 parseCson = require 'cson-parser'
 parseJson = require 'parse-json'
 {parseString} = require 'xml2js'
 
 module.exports = Atomizr =
+  config:
+    renameFiles:
+      title: "Rename Files"
+      description: "This will rename the file after the conversion"
+      type: "boolean"
+      default: true
   atom: atom
   workspace: atom.workspace
   grammars: atom.grammars
@@ -25,7 +33,6 @@ module.exports = Atomizr =
     "source.markdown": ".source.gfm"
 
   activate: (state) ->
-
     # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
     @subscriptions = new CompositeDisposable
 
@@ -108,6 +115,14 @@ module.exports = Atomizr =
     # Write back to editor and change scope
     editor.setText(json)
     editor.setGrammar(@grammars.grammarForScopeName('source.json.subl'))
+    @renameFile(editor, "sublime-completions")
+
+    # rename file
+    inputFile = editor.getPath()
+    parentDir = path.dirname(inputFile)
+    baseName = path.basename(inputFile, path.extname(inputFile))
+    outputFile =  path.join(parentDir, baseName + ".sublime-completions")
+    fs.rename(inputFile, outputFile)
 
   # Convert Sublime Text completion into Atom snippet
   sublToAtom: ->
@@ -257,6 +272,7 @@ module.exports = Atomizr =
     # Write back to editor and change scope
     editor.setText(output)
     editor.setGrammar(@grammars.grammarForScopeName('source.json'))
+    @renameFile(editor, "json")
 
   jsonToCson: ->
     editor = @workspace.getActiveTextEditor()
@@ -296,12 +312,19 @@ module.exports = Atomizr =
     return "#{input}$#{highest}"
 
   removeTrailingTabstops: (input) ->
-
     if input.match(/\$\d+$/g) is null
       # nothing to do here
       return input
 
     return input.replace(/\$\d+$/g, "")
+
+  renameFile: (editor, extension) ->
+    if @atom.config.get('atomizr.renameFiles')
+      inputFile = editor.getPath()
+      parentDir = path.dirname inputFile
+      baseName = path.basename inputFile, path.extname inputFile
+      outputFile = path.join parentDir, baseName + ".#{extension}"
+      fs.rename inputFile, outputFile
 
   makeCoffee: (editor, input) ->
     output = CSON.createCSONString(input)
@@ -309,3 +332,4 @@ module.exports = Atomizr =
     # Write back to editor and change scope
     editor.setText("# #{@meta}\n#{output}")
     editor.setGrammar(@grammars.grammarForScopeName('source.coffee'))
+    @renameFile(editor, "cson")
