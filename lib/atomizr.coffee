@@ -87,8 +87,15 @@ module.exports = Atomizr =
 
       for i, j of v
         if j.prefix?
+
+          # Create tab-separated description
+          unless i is j.prefix
+            trigger = "#{j.prefix}\t#{i}"
+          else
+            trigger = j.prefix
+
           j.body = @removeTrailingTabstops(j.body)
-          sublime.completions.push { trigger: j.prefix, contents: j.body }
+          sublime.completions.push { trigger: trigger, contents: j.body }
 
     # Minimum requirements
     if sublime.completions.length is 0
@@ -148,8 +155,21 @@ module.exports = Atomizr =
 
     for k,v of obj.completions
       if v.trigger?
+
+        # Split tab-separated description
+        unless v.trigger.indexOf("\t") is -1
+          tabs = v.trigger.split("\t")
+
+          @atom.notifications.addWarning("The trigger `#{v.trigger}` requires inspection", detail: "Contains multiple tab-stops, where it should only be one. You might want to look into that!", dismissable: true) if tabs.length > 2
+
+          trigger = tabs[0] 
+          description = tabs.slice(-1).pop()
+        else
+          description = v.trigger
+          trigger = v.trigger
+
         v.contents = @addTrailingTabstops(v.contents)
-        completions[v.trigger] = { prefix: v.trigger, body: v.contents }
+        completions[description] = { prefix: trigger, body: v.contents }
 
     atom = { }
     atom[scope] = completions
