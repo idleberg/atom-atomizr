@@ -12,7 +12,7 @@ module.exports = Atomizr =
   config:
     renameFiles:
       title: "Rename Files"
-      description: "This will rename the file after the conversion"
+      description: "This will rename all files after the conversion"
       type: "boolean"
       default: true
   atom: atom
