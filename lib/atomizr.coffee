@@ -18,13 +18,13 @@ module.exports = Atomizr =
       order: 1
     addTrailingTabstops:
       title: "Add trailing tab-stops"
-      description: "Without trailing tab-stops, Atom snippets act weird"
+      description: "Without trailing tab-stops, you can't jump past an Atom snippet"
       type: "boolean"
       default: true
       order: 2
     removeTrailingTabstops:
       title: "Remove trailing tab-stops"
-      description: "Nobody needs trailing tab-stops in Sublime Text files"
+      description: "Sublime Text files don't need trailing tab-stops"
       type: "boolean"
       default: true
       order: 3
