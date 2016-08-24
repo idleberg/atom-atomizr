@@ -12,9 +12,22 @@ module.exports = Atomizr =
   config:
     renameFiles:
       title: "Rename Files"
-      description: "This will rename all files after the conversion"
+      description: "After conversion, files are renamed for better grammar detection"
       type: "boolean"
       default: true
+      order: 1
+    addTrailingTabstops:
+      title: "Add trailing tab-stops"
+      description: "Without trailing tab-stops, Atom snippets act weird"
+      type: "boolean"
+      default: true
+      order: 2
+    removeTrailingTabstops:
+      title: "Remove trailing tab-stops"
+      description: "Nobody needs trailing tab-stops in Sublime Text files"
+      type: "boolean"
+      default: true
+      order: 3
   atom: atom
   workspace: atom.workspace
   grammars: atom.grammars
@@ -179,7 +192,7 @@ module.exports = Atomizr =
 
           @atom.notifications.addWarning("Atomizr", detail: "Conversion aborted, trigger '#{v.trigger}' contains multiple tabs", dismissable: true) if tabs.length > 2
 
-          trigger = tabs[0] 
+          trigger = tabs[0]
           description = tabs.slice(-1).pop()
         else
           description = v.trigger
@@ -294,7 +307,8 @@ module.exports = Atomizr =
     @makeCoffee(editor, input)
 
   addTrailingTabstops: (input) ->
-    unless input.match(/\$\d+$/g) is null
+    
+    unless input.match(/\$\d+$/g) is null and @atom.config.get('atomizr.addTrailingTabstops') is not false
       # nothing to do here
       return input
 
@@ -307,14 +321,14 @@ module.exports = Atomizr =
     # no tab-stops
     unless tabStops.length
       return "#{input}$1"
-    
+
     tabStops = tabStops.sort()
     highest = parseInt(tabStops[tabStops.length - 1]) + 1
 
     return "#{input}$#{highest}"
 
   removeTrailingTabstops: (input) ->
-    if input.match(/\$\d+$/g) is null
+    if input.match(/\$\d+$/g) is null or @atom.config.get('atomizr.removeTrailingTabstops') is false
       # nothing to do here
       return input
 
