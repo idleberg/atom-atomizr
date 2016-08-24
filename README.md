@@ -1,4 +1,4 @@
-# Atomizr
+# Atomizr for Atom
 
 [![apm](https://img.shields.io/apm/l/atomizr.svg?style=flat-square)](https://atom.io/packages/atomizr)
 [![apm](https://img.shields.io/apm/v/atomizr.svg?style=flat-square)](https://atom.io/packages/atomizr)
