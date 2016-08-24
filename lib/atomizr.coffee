@@ -106,7 +106,7 @@ module.exports = Atomizr =
 
     # Minimum requirements
     if sublime.completions.length is 0
-      @atom.notifications.addWarning("Atomizr", detail: "This doesn't seem to be a valid Atom snippet file. Aborting.", dismissable: false)
+      @invalidFormat("Atom snippet")
       return
 
     # Convert to JSON
@@ -136,6 +136,8 @@ module.exports = Atomizr =
       @sublCompletionsToAtom()
     else if scope is "text.xml.subl"
       @sublSnippetToAtom()
+    else
+      @invalidFormat("Sublime Text")
 
   # Convert Sublime Text completion into Atom snippet
   sublCompletionsToAtom: ->
@@ -154,7 +156,7 @@ module.exports = Atomizr =
 
     # Minimum requirements
     unless obj.scope? or obj.completions?
-      @atom.notifications.addWarning("Atomizr", detail: "This doesn't seem to be a valid Sublime Text completions file. Aborting.", dismissable: false)
+      @invalidFormat("Sublime Text completions")
       return
 
     # Conversion
@@ -212,7 +214,7 @@ module.exports = Atomizr =
 
     # Minimum requirements
     unless obj.scope? or obj.content?
-      @atom.notifications.addWarning("Atomizr", detail: "This doesn't seem to be a valid Sublime Text snippet file. Aborting.", dismissable: false)
+      @invalidFormat("Sublime Text snippet")
       return
 
     # Get scope, convert if necessary
@@ -325,6 +327,9 @@ module.exports = Atomizr =
       baseName = path.basename inputFile, path.extname inputFile
       outputFile = path.join parentDir, baseName + ".#{extension}"
       fs.rename inputFile, outputFile
+
+  invalidFormat: (type) ->
+    @atom.notifications.addWarning("Atomizr", detail: "This doesn't seem to be a valid #{type} file. Aborting.", dismissable: false)
 
   makeCoffee: (editor, input) ->
     output = CSON.createCSONString(input)
