@@ -92,7 +92,7 @@ module.exports = Atomizr =
 
     # Conversion
     sublime =
-      meta: @meta
+      "#": @meta
       scope: null
       completions: []
 
