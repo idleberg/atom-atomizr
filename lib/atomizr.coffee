@@ -28,14 +28,13 @@ module.exports = Atomizr =
       type: "boolean"
       default: true
       order: 3
-  atom: atom
   workspace: atom.workspace
   grammars: atom.grammars
   subscriptions: null
   meta: "Generated with Atomizr – https://atom.io/packages/atomizr"
 
-  # Replace scope-name exceptions
-  # https://gist.github.com/idleberg/fca633438329cc5ae327
+  # Replace syntax scopes, since they don't always match
+  # More info at https://gist.github.com/idleberg/fca633438329cc5ae327
   exceptions:
     "source.c++": ".source.cpp"
     "source.java-props": ".source.java-properties"
@@ -57,6 +56,10 @@ module.exports = Atomizr =
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-sublime-text-snippet-to-atom': => @sublSnippetToAtom()
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:toggle-atom-snippet-format': => @atomToAtom()
 
+    # Write to scope replacement rules to config
+    unless atom.config.get("atomizr.scopeReplacements")
+      atom.config.set("atomizr.scopeReplacements", @exceptions)
+
   deactivate: ->
     @subscriptions.dispose()
 
@@ -64,7 +67,7 @@ module.exports = Atomizr =
   autoConvert: ->
     editor = @workspace.getActiveTextEditor()
     unless editor?
-      @atom.beep()
+      atom.beep()
       return
     scope = editor.getGrammar().scopeName
 
@@ -79,7 +82,7 @@ module.exports = Atomizr =
   atomToSubl: ->
     editor = @workspace.getActiveTextEditor()
     unless editor?
-      @atom.beep()
+      atom.beep()
       return
     text = editor.getText()
 
@@ -87,19 +90,19 @@ module.exports = Atomizr =
     try
       obj = parseCson.parse(text)
     catch e
-      @atom.notifications.addError("Atomizr", detail: e, dismissable: true)
+      atom.notifications.addError("Atomizr", detail: e, dismissable: true)
       return
 
     # Conversion
     sublime =
-      "#": @meta
+      meta: @meta
       scope: null
       completions: []
 
     for k,v of obj
 
       # Get scope, convert if necessary
-      for subl,atom of @exceptions
+      for subl,atom of atom.config.get("atomizr.scopeReplacements")
         if k is atom
           sublime.scope = subl
         else
@@ -141,7 +144,7 @@ module.exports = Atomizr =
   sublToAtom: ->
     editor = @workspace.getActiveTextEditor()
     unless editor?
-      @atom.beep()
+      atom.beep()
       return
     scope = editor.getGrammar().scopeName
 
@@ -156,7 +159,7 @@ module.exports = Atomizr =
   sublCompletionsToAtom: ->
     editor = @workspace.getActiveTextEditor()
     unless editor?
-      @atom.beep()
+      atom.beep()
       return
     text = editor.getText()
 
@@ -164,7 +167,7 @@ module.exports = Atomizr =
     try
       obj = parseJson(text)
     catch e
-      @atom.notifications.addError("Atomizr", detail: e, dismissable: true)
+      atom.notifications.addError("Atomizr", detail: e, dismissable: true)
       return
 
     # Minimum requirements
@@ -176,7 +179,7 @@ module.exports = Atomizr =
     completions = {}
 
     # Get scope, convert if necessary
-    for subl,atom of @exceptions
+    for subl,atom of atom.config.get("atomizr.scopeReplacements")
       if obj.scope is subl
         scope = atom
         break
@@ -190,7 +193,7 @@ module.exports = Atomizr =
         unless v.trigger.indexOf("\t") is -1
           tabs = v.trigger.split("\t")
 
-          @atom.notifications.addWarning("Atomizr", detail: "Conversion aborted, trigger '#{v.trigger}' contains multiple tabs", dismissable: true) if tabs.length > 2
+          atom.notifications.addWarning("Atomizr", detail: "Conversion aborted, trigger '#{v.trigger}' contains multiple tabs", dismissable: true) if tabs.length > 2
 
           trigger = tabs[0]
           description = tabs.slice(-1).pop()
@@ -211,7 +214,7 @@ module.exports = Atomizr =
   sublSnippetToAtom: ->
     editor = @workspace.getActiveTextEditor()
     unless editor?
-      @atom.beep()
+      atom.beep()
       return
     text = editor.getText()
 
@@ -222,7 +225,7 @@ module.exports = Atomizr =
       parseString text, (e, result) ->
         obj = result.snippet
     catch e
-      @atom.notifications.addError("Atomizr", detail: "Invalid XML, aborting", dismissable: false)
+      atom.notifications.addError("Atomizr", detail: "Invalid XML, aborting", dismissable: false)
       return
 
     # Minimum requirements
@@ -231,7 +234,7 @@ module.exports = Atomizr =
       return
 
     # Get scope, convert if necessary
-    for subl,atom of @exceptions
+    for subl,atom of atom.config.get("atomizr.scopeReplacements")
       if obj.scope.toString() is subl
         scope = atom
         break
@@ -258,7 +261,7 @@ module.exports = Atomizr =
   atomToAtom: ->
     editor = @workspace.getActiveTextEditor()
     unless editor?
-      @atom.beep()
+      atom.beep()
       return
     scope = editor.getGrammar().scopeName
 
@@ -271,7 +274,7 @@ module.exports = Atomizr =
   csonToJson: ->
     editor = @workspace.getActiveTextEditor()
     unless editor?
-      @atom.beep()
+      atom.beep()
       return
     text = editor.getText()
 
@@ -279,7 +282,7 @@ module.exports = Atomizr =
     try
       input = parseCson.parse(text)
     catch e
-      @atom.notifications.addError("Atomizr", detail: e, dismissable: true)
+      atom.notifications.addError("Atomizr", detail: e, dismissable: true)
       return
 
     output = CSON.createJSONString(input)
@@ -292,7 +295,7 @@ module.exports = Atomizr =
   jsonToCson: ->
     editor = @workspace.getActiveTextEditor()
     unless editor?
-      @atom.beep()
+      atom.beep()
       return
     text = editor.getText()
 
@@ -300,7 +303,7 @@ module.exports = Atomizr =
     try
       input = parseJson(text)
     catch e
-      @atom.notifications.addError("Atomizr", detail: e, dismissable: true)
+      atom.notifications.addError("Atomizr", detail: e, dismissable: true)
       return
 
     # Convert to CSON
@@ -308,7 +311,7 @@ module.exports = Atomizr =
 
   addTrailingTabstops: (input) ->
     
-    unless input.match(/\$\d+$/g) is null and @atom.config.get('atomizr.addTrailingTabstops') is not false
+    unless input.match(/\$\d+$/g) is null and atom.config.get('atomizr.addTrailingTabstops') is not false
       # nothing to do here
       return input
 
@@ -328,14 +331,14 @@ module.exports = Atomizr =
     return "#{input}$#{highest}"
 
   removeTrailingTabstops: (input) ->
-    if input.match(/\$\d+$/g) is null or @atom.config.get('atomizr.removeTrailingTabstops') is false
+    if input.match(/\$\d+$/g) is null or atom.config.get('atomizr.removeTrailingTabstops') is false
       # nothing to do here
       return input
 
     return input.replace(/\$\d+$/g, "")
 
   renameFile: (editor, extension) ->
-    if @atom.config.get('atomizr.renameFiles')
+    if atom.config.get('atomizr.renameFiles')
       inputFile = editor.getPath()
       parentDir = path.dirname inputFile
       baseName = path.basename inputFile, path.extname inputFile
@@ -343,7 +346,7 @@ module.exports = Atomizr =
       fs.rename inputFile, outputFile
 
   invalidFormat: (type) ->
-    @atom.notifications.addWarning("Atomizr", detail: "This doesn't seem to be a valid #{type} file. Aborting.", dismissable: false)
+    atom.notifications.addWarning("Atomizr", detail: "This doesn't seem to be a valid #{type} file. Aborting.", dismissable: false)
 
   makeCoffee: (editor, input) ->
     output = CSON.createCSONString(input)
