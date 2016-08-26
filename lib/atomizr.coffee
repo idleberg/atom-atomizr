@@ -340,7 +340,6 @@ module.exports = Atomizr =
       baseName = path.basename inputFile, path.extname inputFile
       outputFile = path.join parentDir, baseName + ".#{extension}"
       fs.rename inputFile, outputFile
-
       atom.workspace.saveActivePaneItem()
 
   invalidFormat: (type) ->
