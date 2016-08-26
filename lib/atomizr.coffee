@@ -56,10 +56,6 @@ module.exports = Atomizr =
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-sublime-text-snippet-to-atom': => @sublSnippetToAtom()
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:toggle-atom-snippet-format': => @atomToAtom()
 
-    # Write to scope replacement rules to config
-    unless atom.config.get("atomizr.scopeReplacements")
-      atom.config.set("atomizr.scopeReplacements", @exceptions)
-
   deactivate: ->
     @subscriptions.dispose()
 
@@ -102,7 +98,7 @@ module.exports = Atomizr =
     for k,v of obj
 
       # Get scope, convert if necessary
-      for subl,atom of atom.config.get("atomizr.scopeReplacements")
+      for subl,atom of @exceptions
         if k is atom
           sublime.scope = subl
         else
@@ -179,7 +175,7 @@ module.exports = Atomizr =
     completions = {}
 
     # Get scope, convert if necessary
-    for subl,atom of atom.config.get("atomizr.scopeReplacements")
+    for subl,atom of @exceptions
       if obj.scope is subl
         scope = atom
         break
@@ -234,7 +230,7 @@ module.exports = Atomizr =
       return
 
     # Get scope, convert if necessary
-    for subl,atom of atom.config.get("atomizr.scopeReplacements")
+    for subl,atom of @exceptions
       if obj.scope.toString() is subl
         scope = atom
         break
@@ -344,6 +340,8 @@ module.exports = Atomizr =
       baseName = path.basename inputFile, path.extname inputFile
       outputFile = path.join parentDir, baseName + ".#{extension}"
       fs.rename inputFile, outputFile
+
+      atom.workspace.saveActivePaneItem()
 
   invalidFormat: (type) ->
     atom.notifications.addWarning("Atomizr", detail: "This doesn't seem to be a valid #{type} file. Aborting.", dismissable: false)
