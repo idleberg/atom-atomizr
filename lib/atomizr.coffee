@@ -3,10 +3,12 @@
 # 3rd-party dependencies
 fs = require 'fs'
 path = require 'path'
+glob = require 'glob'
 CSON = require 'cson'
 parseCson = require 'cson-parser'
 parseJson = require 'parse-json'
-{parseString} = require 'xml2js'
+convert = require('xml-js');
+tidy = require("tidy-html5").tidy_html5
 
 module.exports = Atomizr =
   config:
@@ -50,11 +52,12 @@ module.exports = Atomizr =
 
     # Register commands
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:automatic-conversion': => @autoConvert()
-    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-atom-to-sublime-text': => @atomToSubl()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-atom-to-sublime-text': => @atomToSubl(null)
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-sublime-text-to-atom': => @sublToAtom()
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-sublime-text-completions-to-atom': => @sublCompletionsToAtom()
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-sublime-text-snippet-to-atom': => @sublSnippetToAtom()
-    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:toggle-atom-snippet-format': => @atomToAtom()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:toggle-atom-format': => @atomToAtom()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:toggle-sublime-sublformat': => @sublToSubl()
 
   deactivate: ->
     @subscriptions.dispose()
@@ -68,15 +71,17 @@ module.exports = Atomizr =
     scope = editor.getGrammar().scopeName
 
     if scope is "source.coffee"
-      @atomToSubl()
+      @atomToSubl(null)
     else if scope is "source.json.subl"
       @sublCompletionsToAtom()
     else if scope is "text.xml.subl"
       @sublSnippetToAtom()
 
   # Convert Atom snippet into Sublime Text completion
-  atomToSubl: ->
-    editor = @workspace.getActiveTextEditor()
+  atomToSubl: (editor) ->
+    if editor is null
+      editor = @workspace.getActiveTextEditor()
+
     unless editor?
       atom.beep()
       return
@@ -218,34 +223,34 @@ module.exports = Atomizr =
 
     # Validate XML
     try
-      parseString text, (e, result) ->
-        obj = result.snippet
+      obj = convert.xml2js(text, {spaces: 4, compact:true})
     catch e
       atom.notifications.addError("Atomizr", detail: "Invalid XML, aborting", dismissable: false)
       return
 
     # Minimum requirements
-    unless obj.scope? or obj.content?
+    unless obj.snippet.scope? or obj.snippet.content._cdata?
       @invalidFormat("Sublime Text snippet")
       return
 
     # Get scope, convert if necessary
     for subl,atom of @exceptions
-      if obj.scope.toString() is subl
+      if obj.snippet.scope.toString() is subl
         scope = atom
         break
       else
-        scope = "." + obj.scope
+        scope = "." + obj.snippet.scope["_text"]
 
-    if obj.description
-      description = obj.description
+    if obj.snippet.description
+      description = obj.snippet.description["_text"]
     else
-      description = obj.tabTrigger
+      description = obj.snippet.tabTrigger["_text"]
 
-    obj.content = @addTrailingTabstops(obj.content[0].trim())
+    prefix = obj.snippet.tabTrigger["_text"]
+    content = @addTrailingTabstops(obj.snippet.content._cdata.trim())
 
     snippet = {}
-    snippet[obj.description] = { prefix: obj.tabTrigger[0], body: obj.content }
+    snippet[description] = { prefix: prefix, body: content }
 
     atom = {}
     atom[scope] = snippet
@@ -305,8 +310,90 @@ module.exports = Atomizr =
     # Convert to CSON
     @makeCoffee(editor, input)
 
-  addTrailingTabstops: (input) ->
+  # Convert Sublime snippet format (JSON to XML, or vice versa)
+  sublToSubl: ->
+    editor = @workspace.getActiveTextEditor()
+    unless editor?
+      atom.beep()
+      return
+    scope = editor.getGrammar().scopeName
+
     
+    # Automatic conversion, based on scope
+    if scope is "source.json.subl"
+      @jsonToXml()
+    else if scope is "text.xml"
+      @xmlToJson()
+
+  xmlToJson: () ->
+    editor = @workspace.getActiveTextEditor()
+    unless editor?
+      atom.beep()
+      return
+    text = editor.getText()
+
+    # Conversion
+    try
+      input = convert.xml2js(text, {spaces: 4, compact:true})
+    catch e
+      atom.notifications.addError("Atomizr", detail: e, dismissable: true)
+      return
+
+    # Minimum requirements
+    unless input.snippet.scope? or input.snippet.content._cdata?
+      @invalidFormat("Sublime Text snippet")
+      return
+
+    obj =
+      meta: @meta
+      scope: input.snippet.scope["_text"]
+      completions: [
+        contents: input.snippet.content._cdata
+        trigger: input.snippet.tabTrigger["_text"]
+      ]
+
+    if input.snippet.description
+      obj.completions.trigger = "#{obj.completions.trigger}\t#{input.snippet.description['_text']}"
+
+    json = JSON.stringify(obj, null, '\t')
+
+    # Write back to editor and change scope
+    editor.setText(json)
+    editor.setGrammar(@grammars.grammarForScopeName('source.json.subl'))
+    @renameFile(editor, "sublime-completion")
+
+  jsonToXml: () ->
+    editor = @workspace.getActiveTextEditor()
+    unless editor?
+      atom.beep()
+      return
+    text = editor.getText()
+
+    # Conversion
+    try
+      input = parseJson(text)
+    catch e
+      atom.notifications.addError("Atomizr", detail: e, dismissable: true)
+      return
+
+    obj =
+      _comment: @meta
+      snippet:
+        content: 
+          _cdata: input.completions[0].contents
+        tabTrigger:
+          _text: input.completions[0].trigger
+        scope:
+          _text: input.scope
+
+    xml = convert.js2xml(obj, {compact: true})
+
+    # Write back to editor and change scope
+    editor.setText(xml)
+    editor.setGrammar(@grammars.grammarForScopeName('text.xml'))
+    @renameFile(editor, "sublime-snippet")
+
+  addTrailingTabstops: (input) ->
     unless input.match(/\$\d+$/g) is null and atom.config.get('atomizr.addTrailingTabstops') is not false
       # nothing to do here
       return input
