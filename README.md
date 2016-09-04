@@ -46,7 +46,8 @@ There are several commands available to start conversion, each available from th
 * Convert Atom to Sublime Text
 * Convert Sublime Text completions to Atom
 * Convert Sublime Text snippet to Atom
-* Toggle Atom snippet format
+* Toggle Atom format
+* Toggle Sublime format
 
 A shortcut for automatic conversion is also available in the context menu.
 
@@ -59,7 +60,7 @@ Memorizing the keyboard shortcuts for conversion is easy. Just think of the <kbd
 * Sublime Text to Atom (S to A): <kbd>Ctrl</kbd>+<kbd>S</kbd>, <kbd>Ctrl</kbd>+<kbd>A</kbd>
 * Atom to Sublime Text (A to S): <kbd>Ctrl</kbd>+<kbd>A</kbd>, <kbd>Ctrl</kbd>+<kbd>S</kbd>
 
-For automatic conversion, press <kbd>Ctrl</kbd>+<kbd>C</kbd> twice. To toggle the Atom snippet format (CSON↔JSON), press <kbd>Ctrl</kbd>+<kbd>A</kbd> twice.
+For automatic conversion, press <kbd>Ctrl</kbd>+<kbd>C</kbd> twice.
 
 ## Grammar
 

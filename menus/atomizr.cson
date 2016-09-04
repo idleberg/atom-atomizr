@@ -17,6 +17,10 @@
         },
         { 'type': 'separator' },
         {
+          'label': 'Toggle Sublime Text format (XML↔JSON)'
+          'command': 'atomizr:toggle-sublime-sublformat'
+        }
+        {
           'label': 'Convert Atom to Sublime Text'
           'command': 'atomizr:convert-atom-to-sublime-text'
         },
@@ -26,8 +30,8 @@
         }
         { 'type': 'separator' },
         {
-          'label': 'Toggle Atom snippet format (CSON↔JSON)'
-          'command': 'atomizr:toggle-atom-snippet-format'
+          'label': 'Toggle Atom format (CSON↔JSON)'
+          'command': 'atomizr:toggle-atom-format'
         }
         {
           'label': 'Convert Sublime Text to Atom (completions)'
