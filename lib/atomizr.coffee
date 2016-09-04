@@ -7,7 +7,7 @@ glob = require 'glob'
 CSON = require 'cson'
 parseCson = require 'cson-parser'
 parseJson = require 'parse-json'
-convert = require('xml-js');
+convert = require('xml-js')
 tidy = require("tidy-html5").tidy_html5
 
 module.exports = Atomizr =
@@ -379,7 +379,7 @@ module.exports = Atomizr =
     obj =
       _comment: @meta
       snippet:
-        content: 
+        content:
           _cdata: input.completions[0].contents
         tabTrigger:
           _text: input.completions[0].trigger
@@ -398,8 +398,8 @@ module.exports = Atomizr =
       # nothing to do here
       return input
 
-    re  = /\${?(\d+)/g;
-    tabStops = [];
+    re  = /\${?(\d+)/g
+    tabStops = []
 
     while (m = re.exec(input)) != null
       tabStops.push m[1]
