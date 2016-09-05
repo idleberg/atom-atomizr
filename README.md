@@ -9,7 +9,7 @@
 
 Converts Sublime Text completions into Atom snippets, and vice versa.
 
-Also available for [Sublime Text](https://github.com/idleberg/sublime-atomizr) and the [command line](https://github.com/idleberg/ruby-atomizr).
+Also available for [Sublime Text](https://github.com/idleberg/sublime-atomizr) and the [command line](https://github.com/idleberg/ruby-atomizr) (see [comparison chart](https://gist.github.com/idleberg/db6833ee026d2cd7c043bba36733b701)).
 
 ## Installation
 
@@ -46,10 +46,10 @@ There are several commands available to start conversion, each available from th
 * Convert Atom to Sublime Text
 * Convert Sublime Text completions to Atom
 * Convert Sublime Text snippet to Atom
-* Toggle Atom format
-* Toggle Sublime format
+* Toggle Atom format (CSON⟷JSON)
+* Toggle Sublime Text format (XML⟷JSON)
 
-A shortcut for automatic conversion is also available in the context menu.
+The shortcut for automatic conversion is also available in the context menu.
 
 ### Keyboard Shortcuts
 
