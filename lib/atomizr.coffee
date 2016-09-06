@@ -3,12 +3,10 @@
 # 3rd-party dependencies
 fs = require 'fs'
 path = require 'path'
-glob = require 'glob'
 CSON = require 'cson'
 parseCson = require 'cson-parser'
 parseJson = require 'parse-json'
 convert = require('xml-js')
-tidy = require("tidy-html5").tidy_html5
 
 module.exports = Atomizr =
   config:
@@ -386,7 +384,7 @@ module.exports = Atomizr =
         scope:
           _text: input.scope
 
-    xml = convert.js2xml(obj, {compact: true})
+    xml = convert.js2xml(obj, {compact: true, spaces: 4})
 
     # Write back to editor and change scope
     editor.setText(xml)
