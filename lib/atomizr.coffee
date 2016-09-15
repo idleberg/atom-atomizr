@@ -132,13 +132,6 @@ module.exports = Atomizr =
     editor.setGrammar(@grammars.grammarForScopeName('source.json.subl'))
     @renameFile(editor, "sublime-completions")
 
-    # rename file
-    inputFile = editor.getPath()
-    parentDir = path.dirname(inputFile)
-    baseName = path.basename(inputFile, path.extname(inputFile))
-    outputFile =  path.join(parentDir, baseName + ".sublime-completions")
-    fs.rename(inputFile, outputFile)
-
   # Convert Sublime Text completion into Atom snippet
   sublToAtom: ->
     editor = @workspace.getActiveTextEditor()
@@ -320,7 +313,7 @@ module.exports = Atomizr =
     # Automatic conversion, based on scope
     if scope is "source.json.subl"
       @jsonToXml()
-    else if scope is "text.xml"
+    else if scope is "text.xml.subl"
       @xmlToJson()
 
   xmlToJson: () ->
@@ -358,7 +351,7 @@ module.exports = Atomizr =
     # Write back to editor and change scope
     editor.setText(json)
     editor.setGrammar(@grammars.grammarForScopeName('source.json.subl'))
-    @renameFile(editor, "sublime-completion")
+    @renameFile(editor, "sublime-completions")
 
   jsonToXml: () ->
     editor = @workspace.getActiveTextEditor()
@@ -388,7 +381,7 @@ module.exports = Atomizr =
 
     # Write back to editor and change scope
     editor.setText(xml)
-    editor.setGrammar(@grammars.grammarForScopeName('text.xml'))
+    editor.setGrammar(@grammars.grammarForScopeName('text.xml.subl'))
     @renameFile(editor, "sublime-snippet")
 
   addTrailingTabstops: (input) ->
