@@ -368,7 +368,7 @@ module.exports = Atomizr =
       return
 
     obj =
-      _comment: @meta
+      _comment: " #{@meta} "
       snippet:
         content:
           _cdata: input.completions[0].contents
