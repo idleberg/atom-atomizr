@@ -41,13 +41,13 @@ This plugin works on active views only, so start by opening a Sublime Text compl
 
 There are several commands available to start conversion, each available from the [Command Palette](http://flight-manual.atom.io/getting-started/sections/atom-basics/#_command_palette) and the Packages menu.
 
-* Automatic conversion
-* Convert Sublime Text to Atom
-* Convert Atom to Sublime Text
-* Convert Sublime Text completions to Atom
-* Convert Sublime Text snippet to Atom
-* Toggle Atom format (CSON⟷JSON)
-* Toggle Sublime Text format (XML⟷JSON)
+Action                                     | Input           | Output
+-------------------------------------------|-----------------|----------------
+Automatic conversion                       | `CSON|JSON|XML` | `CSON|JSON|XML`
+Convert Atom to Sublime Text               | `CSON|JSON`     | `JSON`
+Convert Sublime Text to Atom               | `JSON|XML`      | `CSON`
+Toggle Atom format                         | `CSON|JSON`     | `JSON|CSON`
+Toggle Sublime Text format                 | `JSON|XML`      | `XML|JSON`
 
 The shortcut for automatic conversion is also available in the context menu.
 
@@ -57,10 +57,12 @@ The shortcut for automatic conversion is also available in the context menu.
 
 Memorizing the keyboard shortcuts for conversion is easy. Just think of the <kbd>S</kbd> key for Sublime Text and the <kbd>A</kbd> key for Atom.
 
-* Sublime Text to Atom (S to A): <kbd>Ctrl</kbd>+<kbd>S</kbd>, <kbd>Ctrl</kbd>+<kbd>A</kbd>
-* Atom to Sublime Text (A to S): <kbd>Ctrl</kbd>+<kbd>A</kbd>, <kbd>Ctrl</kbd>+<kbd>S</kbd>
-* Atom to Atom (A to A): <kbd>Ctrl</kbd>+<kbd>A</kbd>, <kbd>Ctrl</kbd>+<kbd>A</kbd>
-* Sublime Text to Sublime Text (S to S): <kbd>Ctrl</kbd>+<kbd>S</kbd>, <kbd>Ctrl</kbd>+<kbd>S</kbd>
+Action                             | Mnemonic | Shortcut
+-----------------------------------|----------|-----------------------------------------------------------
+Atom to Sublime Text               | “A to S” | <kbd>Ctrl</kbd>+<kbd>A</kbd>, <kbd>Ctrl</kbd>+<kbd>S</kbd>
+Sublime Text to Atom               | “S to A” | <kbd>Ctrl</kbd>+<kbd>S</kbd>, <kbd>Ctrl</kbd>+<kbd>A</kbd>
+Atom to Atom                       | “A to A” | <kbd>Ctrl</kbd>+<kbd>A</kbd>, <kbd>Ctrl</kbd>+<kbd>A</kbd>
+Sublime Text to Sublime Text       | “S to S” | <kbd>Ctrl</kbd>+<kbd>S</kbd>, <kbd>Ctrl</kbd>+<kbd>S</kbd>
 
 For automatic conversion, press <kbd>Ctrl</kbd>+<kbd>C</kbd> twice.
 
