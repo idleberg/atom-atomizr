@@ -389,20 +389,7 @@ module.exports = Atomizr =
       # nothing to do here
       return input
 
-    re  = /\${?(\d+)/g
-    tabStops = []
-
-    while (m = re.exec(input)) != null
-      tabStops.push m[1]
-
-    # no tab-stops
-    unless tabStops.length
-      return "#{input}$1"
-
-    tabStops = tabStops.sort()
-    highest = parseInt(tabStops[tabStops.length - 1]) + 1
-
-    return "#{input}$#{highest}"
+    return "#{input}$0"
 
   removeTrailingTabstops: (input) ->
     if input.match(/\$\d+$/g) is null or atom.config.get('atomizr.removeTrailingTabstops') is false
