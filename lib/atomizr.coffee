@@ -33,7 +33,7 @@ module.exports = Atomizr =
       order: 3
     warnAboutMissingScope:
       title: "Warn about missing scope"
-      description: "Visual Studio Code doesn't store the scope in snippets. Enabling this setting will warn the user."
+      description: "Visual Studio Code doesn't store the scope in snippet files. Enabling this setting will warn the user."
       type: "boolean"
       default: true
       order: 4
@@ -245,7 +245,8 @@ module.exports = Atomizr =
 
     # Convert to CSON
     @makeCoffee(editor, output)
-    atom.notifications.addWarning("Atomizr", detail: "The scope for these snippets could not be determined automatically", dismissable: false)
+    unless atom.config.get('atomizr.warnAboutMissingScope') is false
+      atom.notifications.addWarning("Atomizr", detail: "Could not determine scope automaticaly, using placeholder", dismissable: false)
 
   vsCodeToSubl: ->
     editor = atom.workspace.getActiveTextEditor()
@@ -265,7 +266,9 @@ module.exports = Atomizr =
     editor.setGrammar(atom.grammars.grammarForScopeName('source.json.subl'))
     @renameFile(editor, "sublime-completions")
 
-    atom.notifications.addWarning("Atomizr", detail: "The scope for these completions could not be determined automatically", dismissable: false)
+    unless atom.config.get('atomizr.warnAboutMissingScope') is false
+      atom.notifications.addWarning("Atomizr", detail: "Could not determine scope automaticaly, using placeholder", dismissable: false)
+
 
   # Convert Atom snippet format (CSON to JSON, or vice versa)
   atomToAtom: ->
