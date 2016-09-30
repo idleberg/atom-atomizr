@@ -246,7 +246,7 @@ module.exports = Atomizr =
     # Convert to CSON
     @makeCoffee(editor, output)
     unless atom.config.get('atomizr.warnAboutMissingScope') is false
-      atom.notifications.addWarning("Atomizr", detail: "Could not determine scope automaticaly, using placeholder", dismissable: false)
+      atom.notifications.addWarning("Atomizr", detail: "Could not determine scope automatically, using placeholder", dismissable: false)
 
   vsCodeToSubl: ->
     editor = atom.workspace.getActiveTextEditor()
@@ -267,7 +267,7 @@ module.exports = Atomizr =
     @renameFile(editor, "sublime-completions")
 
     unless atom.config.get('atomizr.warnAboutMissingScope') is false
-      atom.notifications.addWarning("Atomizr", detail: "Could not determine scope automaticaly, using placeholder", dismissable: false)
+      atom.notifications.addWarning("Atomizr", detail: "Could not determine scope automatically, using placeholder", dismissable: false)
 
 
   # Convert Atom snippet format (CSON to JSON, or vice versa)
