@@ -7,7 +7,7 @@
 [![David](https://img.shields.io/david/idleberg/atom-atomizr.svg?style=flat-square)](https://david-dm.org/idleberg/atom-atomizr)
 [![David](https://img.shields.io/david/dev/idleberg/atom-atomizr.svg?style=flat-square)](https://david-dm.org/idleberg/atom-atomizr?type=dev)
 
-Converts Sublime Text completions into Atom snippets, and vice versa.
+Converts Sublime Text completions into Atom (or Visual Studio Code) snippets, and vice versa.
 
 Also available for [Sublime Text](https://github.com/idleberg/sublime-atomizr) and the [command line](https://github.com/idleberg/ruby-atomizr) (see the [comparison chart](https://gist.github.com/idleberg/db6833ee026d2cd7c043bba36733b701)).
 
@@ -43,24 +43,32 @@ There are several commands available to start conversion, each available from th
 
 Action                                     | Input           | Output
 -------------------------------------------|-----------------|----------------
-Automatic conversion                       | `CSON|JSON|XML` | `CSON|JSON|XML`
+Automatic conversion¹                      | `CSON|JSON|XML` | `CSON|JSON|XML`
 Convert Atom to Sublime Text               | `CSON|JSON`     | `JSON`
+Convert Atom to Visual Studio Code         | `CSON|JSON`     | `JSON`
 Convert Sublime Text to Atom               | `JSON|XML`      | `CSON`
+Convert Sublime Text to Visual Studio Code | `JSON|XML`      | `JSON`
+Convert Visual Studio Code to Atom         | `JSON`          | `CSON`
+Convert Visual Studio Code to Sublime Text | `JSON`          | `JSON`
 Toggle Atom format                         | `CSON|JSON`     | `JSON|CSON`
 Toggle Sublime Text format                 | `JSON|XML`      | `XML|JSON`
 
-The shortcut for automatic conversion is also available in the context menu.
+¹⁾ converts Atom and Sublime Text only
 
 ### Keyboard Shortcuts
 
-*The following examples all use the macOS shortcuts, for Linux or Windows use <kbd>Ctrl</kbd>+<kbd>Alt</kbd> rather than just <kbd>Ctrl</kbd>.*
+*The following examples use the macOS keyboard shortcuts. On Linux or Windows use <kbd>Ctrl</kbd>+<kbd>Alt</kbd> as modifier key instead of <kbd>Ctrl</kbd>.*
 
-Memorizing the keyboard shortcuts for conversion is easy. Just think of the <kbd>S</kbd> key for Sublime Text and the <kbd>A</kbd> key for Atom.
+Memorizing the keyboard shortcuts for conversion is easy. Just think of the <kbd>A</kbd> key for Atom, the <kbd>S</kbd> key for Sublime Text and the <kbd>V</kbd> key for Visual Studio Code:
 
 Action                             | Mnemonic | Shortcut
 -----------------------------------|----------|-----------------------------------------------------------
 Atom to Sublime Text               | “A to S” | <kbd>Ctrl</kbd>+<kbd>A</kbd>, <kbd>Ctrl</kbd>+<kbd>S</kbd>
+Atom to Visual Studio Code         | “A to V” | <kbd>Ctrl</kbd>+<kbd>A</kbd>, <kbd>Ctrl</kbd>+<kbd>V</kbd>
 Sublime Text to Atom               | “S to A” | <kbd>Ctrl</kbd>+<kbd>S</kbd>, <kbd>Ctrl</kbd>+<kbd>A</kbd>
+Sublime Text to Visual Studio Code | “S to V” | <kbd>Ctrl</kbd>+<kbd>S</kbd>, <kbd>Ctrl</kbd>+<kbd>V</kbd>
+Visual Studio Code to Atom         | “V to A” | <kbd>Ctrl</kbd>+<kbd>V</kbd>, <kbd>Ctrl</kbd>+<kbd>A</kbd>
+Visual Studio Code to Sublime Text | “V to S” | <kbd>Ctrl</kbd>+<kbd>V</kbd>, <kbd>Ctrl</kbd>+<kbd>S</kbd>
 Atom to Atom                       | “A to A” | <kbd>Ctrl</kbd>+<kbd>A</kbd>, <kbd>Ctrl</kbd>+<kbd>A</kbd>
 Sublime Text to Sublime Text       | “S to S” | <kbd>Ctrl</kbd>+<kbd>S</kbd>, <kbd>Ctrl</kbd>+<kbd>S</kbd>
 

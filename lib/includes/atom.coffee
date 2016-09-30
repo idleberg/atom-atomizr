@@ -1,5 +1,5 @@
 parseCson = require 'cson-parser'
-{exceptions} = require './exceptions'
+shared = require './shared'
 
 module.exports =
 
@@ -18,7 +18,7 @@ module.exports =
 
     for k,v of data
       # Get scope, convert if necessary
-      for scopeSubl, scopeAtom of exceptions
+      for scopeSubl, scopeAtom of shared.exceptions
         if k is scopeAtom
           output.scope = scopeSubl
         else if k[0] is "."
@@ -29,14 +29,17 @@ module.exports =
       for i, j of v
         if j.prefix?
 
+          completions = {}
+
           # Create tab-separated description
           unless i is j.prefix
-            trigger = "#{j.prefix}\t#{i}"
+            completions.trigger = "#{j.prefix}"
+            completions.description = i
           else
-            trigger = j.prefix
+            completions.trigger = j.prefix
 
-          j.body = @removeTrailingTabstops(j.body)
-          output.completions.push { trigger: trigger, contents: j.body }
+          completions.contents = shared.removeTrailingTabstops(j.body)
+          output.completions.push completions
 
     # Minimum requirements
     if output.completions.length is 0
@@ -48,8 +51,15 @@ module.exports =
   write_cson: (input) ->
     snippet = {}
 
-    if input.scope[0] isnt "."
-      input.scope = ".#{input.scope}"
+    for scopeSubl, scopeAtom of shared.exceptions
+      if input.scope is scopeSubl
+        scope = scopeAtom
+        break
+      else
+        if input.scope[0] isnt "."
+          scope = ".#{input.scope}"
+        else
+          scope = input.scope
 
     for i in input.completions
 
@@ -58,25 +68,12 @@ module.exports =
       else
         description = i.trigger
 
-      body = @addTrailingTabstops(i.contents)
+      body = shared.addTrailingTabstops(i.contents)
 
       snippet[description] = { prefix: i.trigger, body: body }
 
-    atom = {}
-    atom[input.scope] = snippet
+    output = {}
+    output[scope] = snippet
 
-    return atom
+    return output
 
-  addTrailingTabstops: (input) ->
-    unless input.match(/\$\d+$/g) is null and atom.config.get('atomizr.addTrailingTabstops') is not false
-      # nothing to do here
-      return input
-
-    return "#{input}$0"
-
-  removeTrailingTabstops: (input) ->
-    if input.match(/\$\d+$/g) is null or atom.config.get('atomizr.removeTrailingTabstops') is false
-      # nothing to do here
-      return input
-
-    return input.replace(/\$\d+$/g, "")

@@ -7,8 +7,9 @@ CSON = require 'cson'
 parseCson = require 'cson-parser'
 parseJson = require 'parse-json'
 
-SublimeText = require './includes/sublime-text'
 Atom = require './includes/atom'
+SublimeText = require './includes/sublime-text'
+VsCode = require './includes/vscode'
 
 module.exports = Atomizr =
   config:
@@ -30,6 +31,12 @@ module.exports = Atomizr =
       type: "boolean"
       default: true
       order: 3
+    warnAboutMissingScope:
+      title: "Warn about missing scope"
+      description: "Visual Studio Code doesn't store the scope in snippets. Enabling this setting will warn the user."
+      type: "boolean"
+      default: true
+      order: 4
   subscriptions: null
   meta: "Generated with Atomizr – https://atom.io/packages/atomizr"
 
@@ -40,9 +47,13 @@ module.exports = Atomizr =
     # Register commands
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:automatic-conversion': => @autoConvert()
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-atom-to-sublime-text': => @atomToSubl(null)
+    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-atom-to-visual-studio-code': => @atomToVsCode()
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-sublime-text-to-atom': => @sublToAtom()
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-sublime-text-completions-to-atom': => @sublCompletionsToAtom()
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-sublime-text-snippet-to-atom': => @sublSnippetToAtom()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-sublime-text-to-visual-studio-code': => @sublToVsCode()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-visual-studio-code-to-atom': => @vsCodeToAtom(null)
+    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-visual-studio-code-to-sublime-text': => @vsCodeToSubl(null)
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:toggle-atom-format': => @atomToAtom()
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:toggle-sublime-sublformat': => @sublToSubl()
 
@@ -85,9 +96,37 @@ module.exports = Atomizr =
     editor.setGrammar(atom.grammars.grammarForScopeName('source.json.subl'))
     @renameFile(editor, "sublime-completions")
 
-  # Convert Sublime Text completion into Atom snippet
+  # Convert Atom snippet into Visual Studio Code snippet
+  atomToVsCode: () ->
+    editor = atom.workspace.getActiveTextEditor()
+
+    unless editor?
+      atom.beep()
+      return
+    input = editor.getText()
+
+    # Validate CSON
+    try
+      data = parseCson.parse(input)
+    catch e
+      atom.notifications.addError("Atomizr", detail: e, dismissable: true)
+      return
+
+    try
+      output = JSON.stringify(data[Object.keys(data)[0]], null, 2)
+    catch e
+      atom.notifications.addError("Atomizr", detail: e, dismissable: true)
+      return
+
+    # Write back to editor and change scope
+    editor.setText(output)
+    editor.setGrammar(atom.grammars.grammarForScopeName('source.json.'))
+    @renameFile(editor, "json")
+
+  # Convert Sublime Text completions into Atom snippet
   sublToAtom: ->
     editor = atom.workspace.getActiveTextEditor()
+
     unless editor?
       atom.beep()
       return
@@ -100,7 +139,7 @@ module.exports = Atomizr =
     else
       atom.notifications.addWarning("Atomizr", detail: "This doesn't seem to be a valid Sublime Text file. Aborting.", dismissable: false)
 
-  # Convert Sublime Text completion into Atom snippet
+  # Convert Sublime Text completions into Atom snippet
   sublCompletionsToAtom: ->
     editor = atom.workspace.getActiveTextEditor()
     unless editor?
@@ -133,6 +172,100 @@ module.exports = Atomizr =
 
     # Convert to CSON
     @makeCoffee(editor, output)
+
+  sublToVsCode: ->
+    editor = atom.workspace.getActiveTextEditor()
+
+    unless editor?
+      atom.beep()
+      return
+    scope = editor.getGrammar().scopeName
+
+    if scope is "source.json.subl"
+      @sublCompletionsToVsCode()
+    else if scope is "text.xml.subl"
+      @sublSnippetToVsCode()
+    else
+      atom.notifications.addWarning("Atomizr", detail: "This doesn't seem to be a valid Sublime Text file. Aborting.", dismissable: false)
+
+  # Convert Sublime Text completions into Atom snippet
+  sublCompletionsToVsCode: ->
+    editor = atom.workspace.getActiveTextEditor()
+    unless editor?
+      atom.beep()
+      return
+    input = editor.getText()
+
+    data = SublimeText.read_json(input)
+    return if data is false
+
+    output = VsCode.write_json(data)
+    return if output is false
+
+    # Write back to editor and change scope
+    editor.setText(output)
+    editor.setGrammar(atom.grammars.grammarForScopeName('source.json.subl'))
+    @renameFile(editor, "sublime-completions")
+
+  # Convert Sublime Text snippet into Atom snippet
+  sublSnippetToVsCode: ->
+    editor = atom.workspace.getActiveTextEditor()
+    unless editor?
+      atom.beep()
+      return
+    input = editor.getText()
+  
+    data = SublimeText.read_xml(input)
+    return if data is false
+
+    output = VsCode.write_json(data)
+    return if output is false
+
+    # Write back to editor and change scope
+    editor.setText(output)
+    editor.setGrammar(atom.grammars.grammarForScopeName('source.json'))
+    @renameFile(editor, "json")
+
+  vsCodeToAtom: ->
+    editor = atom.workspace.getActiveTextEditor()
+    unless editor?
+      atom.beep()
+      return
+    input = editor.getText()
+
+    # Validate CSON
+    try
+      data = parseJson(input)
+    catch e
+      atom.notifications.addError("Atomizr", detail: e, dismissable: true)
+      return
+
+    output = 
+      ".source": data
+
+    # Convert to CSON
+    @makeCoffee(editor, output)
+    atom.notifications.addWarning("Atomizr", detail: "The scope for these snippets could not be determined automatically", dismissable: false)
+
+  vsCodeToSubl: ->
+    editor = atom.workspace.getActiveTextEditor()
+    unless editor?
+      atom.beep()
+      return
+    input = editor.getText()
+
+    data = VsCode.read_json(input)
+    return if data is false
+
+    output = SublimeText.write_json(data)
+    return if output is false
+
+    # Write back to editor and change scope
+    editor.setText(output)
+    editor.setGrammar(atom.grammars.grammarForScopeName('source.json.subl'))
+    @renameFile(editor, "sublime-completions")
+
+    atom.notifications.addWarning("Atomizr", detail: "The scope for these completions could not be determined automatically", dismissable: false)
 
   # Convert Atom snippet format (CSON to JSON, or vice versa)
   atomToAtom: ->

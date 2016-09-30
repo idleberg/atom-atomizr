@@ -1,6 +1,6 @@
 convert = require 'xml-js'
 parseJson = require 'parse-json'
-{exceptions} = require './exceptions'
+shared = require './shared'
 
 module.exports =
   meta: "Generated with Atomizr – https://atom.io/packages/atomizr"
@@ -22,12 +22,12 @@ module.exports =
       output = {}
 
       # Get scope, convert if necessary
-      for scopeSubl, scopeAtom of exceptions
-        if data.scope is scopeSubl
-          output.scope = scopeAtom
-          break
-        else
-          output.scope = data.scope
+      # for scopeSubl, scopeAtom of shared.exceptions
+      #   if data.scope is scopeSubl
+      #     output.scope = scopeAtom
+      #     break
+      #   else
+      output.scope = data.scope
 
       output.completions = []
       i = 0
@@ -45,8 +45,9 @@ module.exports =
             description = tabs.slice(-1).pop()
           else
             trigger = v.trigger
+            description = null
 
-          if description
+          if description?
             output.completions[i] = { description: description, trigger: trigger, contents: v.contents }
           else
             output.completions[i] = { trigger: trigger, contents: v.contents }
@@ -56,7 +57,6 @@ module.exports =
       return output
 
   read_xml: (input) ->
-
     # Validate XML
     try
       data = convert.xml2js(input, {spaces: 4, compact:true})
@@ -120,6 +120,7 @@ module.exports =
     try
       output = JSON.stringify(data, null, 2)
     catch e
+      atom.notifications.addError("Atomizr", detail: e, dismissable: true)
       return false
 
     return output
@@ -188,10 +189,3 @@ module.exports =
     editor.setText(output)
     editor.setGrammar(atom.grammars.grammarForScopeName('text.xml.subl'))
     @renameFile(editor, "sublime-snippet")
-
-  addTrailingTabstops: (input) ->
-    unless input.match(/\$\d+$/g) is null and atom.config.get('atomizr.addTrailingTabstops') is not false
-          # nothing to do here
-          return input
-
-        return "#{input}$0"
