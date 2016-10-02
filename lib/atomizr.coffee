@@ -37,6 +37,16 @@ module.exports = Atomizr =
       type: "boolean"
       default: true
       order: 4
+    atomDefaultSyntax:
+      title: "Atom Default Syntax"
+      description: "Specify your preferred default syntax for Atom snippets"
+      default: "CSON"
+      type: "string"
+      enum: [
+        "CSON",
+        "JSON"
+      ],
+      order: 5
   subscriptions: null
   meta: "Generated with Atomizr – https://atom.io/packages/atomizr"
 
