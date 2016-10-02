@@ -373,18 +373,6 @@ module.exports = Atomizr =
     editor.setGrammar(atom.grammars.grammarForScopeName('text.xml.subl'))
     @renameFile(editor, "sublime-snippet")
 
-  addTrailingTabstops: (input) ->
-    unless input.match(/\$\d+$/g) is null and atom.config.get('atomizr.addTrailingTabstops') is not false
-      # nothing to do here
-      return input
-
-    return "#{input}$0"
-
-  removeTrailingTabstops: (input) ->
-    if input.match(/\$\d+$/g) is null or atom.config.get('atomizr.removeTrailingTabstops') is false
-      # nothing to do here
-      return input
-
     return input.replace(/\$\d+$/g, "")
 
   renameFile: (editor, extension) ->
