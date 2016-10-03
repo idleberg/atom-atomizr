@@ -163,8 +163,11 @@ module.exports = Atomizr =
     output = Atom.write_cson(data)
     return if output is false
 
-    # Convert to CSON
-    @makeCoffee(editor, output)
+    # Write to editor
+    if atom.config.get('atomizr.atomDefaultSyntax') is "CSON"
+      @makeCoffee(editor, output)
+    else
+      @makeJson(editor, output)
 
   # Convert Sublime Text snippet into Atom snippet
   sublSnippetToAtom: ->
@@ -180,8 +183,11 @@ module.exports = Atomizr =
     output = Atom.write_cson(data)
     return if output is false
 
-    # Convert to CSON
-    @makeCoffee(editor, output)
+    # Write to editor
+    if atom.config.get('atomizr.atomDefaultSyntax') is "CSON"
+      @makeCoffee(editor, output)
+    else
+      @makeJson(editor, output)
 
   sublToVsCode: ->
     editor = atom.workspace.getActiveTextEditor()
@@ -253,8 +259,12 @@ module.exports = Atomizr =
     output = 
       ".source": data
 
-    # Convert to CSON
-    @makeCoffee(editor, output)
+    # Write to editor
+    if atom.config.get('atomizr.atomDefaultSyntax') is "CSON"
+      @makeCoffee(editor, output)
+    else
+      @makeJson(editor, output)
+
     unless atom.config.get('atomizr.warnAboutMissingScope') is false
       atom.notifications.addWarning("Atomizr", detail: "Could not determine scope automatically, using placeholder", dismissable: false)
 
@@ -291,7 +301,7 @@ module.exports = Atomizr =
     # Automatic conversion, based on scope
     if scope is "source.coffee"
       @csonToJson()
-    else if scope is "source.json"
+    else if scope.startsWith("source.json")
       @jsonToCson()
 
   csonToJson: ->
@@ -329,7 +339,7 @@ module.exports = Atomizr =
       atom.notifications.addError("Atomizr", detail: e, dismissable: true)
       return
 
-    # Convert to CSON
+    # Write to editor
     @makeCoffee(editor, input)
 
   # Convert Sublime snippet format (JSON to XML, or vice versa)
@@ -401,3 +411,11 @@ module.exports = Atomizr =
     editor.setText("# #{@meta}\n#{output}")
     editor.setGrammar(atom.grammars.grammarForScopeName('source.coffee'))
     @renameFile(editor, "cson")
+
+  makeJson: (editor, input) ->
+    output = JSON.stringify(input, null, 2)
+
+    # Write back to editor and change scope
+    editor.setText(output)
+    editor.setGrammar(atom.grammars.grammarForScopeName('source.json'))
+    @renameFile(editor, "json")
