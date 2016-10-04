@@ -44,6 +44,7 @@
     "xml-js": "^0.9.5"
   },
   "devDependencies": {
+    "coffeelint-stylish": "^0.1.2",
     "gulp": "^3.9.1",
     "gulp-coffeelint": "^0.6.0",
     "gulp-debug": "^2.1.2",
