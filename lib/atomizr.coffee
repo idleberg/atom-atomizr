@@ -256,7 +256,7 @@ module.exports = Atomizr =
       atom.notifications.addError("Atomizr", detail: e, dismissable: true)
       return
 
-    output = 
+    output =
       ".source": data
 
     # Write to editor

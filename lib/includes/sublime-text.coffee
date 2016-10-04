@@ -6,55 +6,55 @@ module.exports =
   meta: "Generated with Atomizr – https://atom.io/packages/atomizr"
 
   read_json: (input) ->
-      # Validate JSON
-      try
-        data = parseJson(input)
-      catch e
-        atom.notifications.addError("Atomizr", detail: e, dismissable: true)
-        return
+    # Validate JSON
+    try
+      data = parseJson(input)
+    catch e
+      atom.notifications.addError("Atomizr", detail: e, dismissable: true)
+      return
 
-      # Minimum requirements
-      unless data.scope? or data.completions?
-        atom.notifications.addWarning("Atomizr", detail: "This doesn't seem to be a valid Sublime Text completions file. Aborting.", dismissable: false)
-        return false
+    # Minimum requirements
+    unless data.scope? or data.completions?
+      atom.notifications.addWarning("Atomizr", detail: "This doesn't seem to be a valid Sublime Text completions file. Aborting.", dismissable: false)
+      return false
 
-      # Conversion
-      output = {}
+    # Conversion
+    output = {}
 
-      # Get scope, convert if necessary
-      # for scopeSubl, scopeAtom of shared.exceptions
-      #   if data.scope is scopeSubl
-      #     output.scope = scopeAtom
-      #     break
-      #   else
-      output.scope = data.scope
+    # Get scope, convert if necessary
+    # for scopeSubl, scopeAtom of shared.exceptions
+    #   if data.scope is scopeSubl
+    #     output.scope = scopeAtom
+    #     break
+    #   else
+    output.scope = data.scope
 
-      output.completions = []
-      i = 0
+    output.completions = []
+    i = 0
 
-      for k,v of data.completions
-        if v.trigger?
+    for k,v of data.completions
+      if v.trigger?
 
-          # Split tab-separated description
-          unless v.trigger.indexOf("\t") is -1
-            tabs = v.trigger.split("\t")
+        # Split tab-separated description
+        unless v.trigger.indexOf("\t") is -1
+          tabs = v.trigger.split("\t")
 
-            atom.notifications.addWarning("Atomizr", detail: "Conversion aborted, trigger '#{v.trigger}' contains multiple tabs", dismissable: true) if tabs.length > 2
+          atom.notifications.addWarning("Atomizr", detail: "Conversion aborted, trigger '#{v.trigger}' contains multiple tabs", dismissable: true) if tabs.length > 2
 
-            trigger = tabs[0]
-            description = tabs.slice(-1).pop()
-          else
-            trigger = v.trigger
-            description = null
+          trigger = tabs[0]
+          description = tabs.slice(-1).pop()
+        else
+          trigger = v.trigger
+          description = null
 
-          if description?
-            output.completions[i] = { description: description, trigger: trigger, contents: v.contents }
-          else
-            output.completions[i] = { trigger: trigger, contents: v.contents }
+        if description?
+          output.completions[i] = { description: description, trigger: trigger, contents: v.contents }
+        else
+          output.completions[i] = { trigger: trigger, contents: v.contents }
 
-          i++
+        i++
 
-      return output
+    return output
 
   read_xml: (input) ->
     # Validate XML
@@ -98,7 +98,7 @@ module.exports =
     completions = []
     i = 0
 
-    for item in input.completions      
+    for item in input.completions
       contents = item.contents
       if item.description
         trigger = "#{item.trigger}\t#{item.description}"
