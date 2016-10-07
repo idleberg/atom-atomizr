@@ -256,7 +256,7 @@ module.exports = Atomizr =
       atom.notifications.addError("Atomizr", detail: e, dismissable: true)
       return
 
-    output = 
+    output =
       ".source": data
 
     # Write to editor
@@ -269,9 +269,9 @@ module.exports = Atomizr =
       atom.notifications.addWarning("Atomizr", detail: "Could not determine scope automatically, using placeholder", dismissable: false)
 
       # Select placeholder scope
-      rangeStart = 1 
+      rangeStart = 1
       rangeEnd = ".source".length + rangeStart
-      range = [[1, rangeStart], [1, rangeEnd]];
+      range = [[1, rangeStart], [1, rangeEnd]]
       
       editor.selectMarker(editor.markBufferRange(range, {invalidate: 'never'}))
 
@@ -299,7 +299,7 @@ module.exports = Atomizr =
       # Select placeholder scope
       rangeStart = 12
       rangeEnd = "source".length + rangeStart
-      range = [[2, rangeStart], [2, rangeEnd]];
+      range = [[2, rangeStart], [2, rangeEnd]]
 
       editor.selectMarker(editor.markBufferRange(range, {invalidate: 'never'}))
 
