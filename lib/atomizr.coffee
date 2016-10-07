@@ -268,11 +268,14 @@ module.exports = Atomizr =
     unless atom.config.get('atomizr.warnAboutMissingScope') is false
       atom.notifications.addWarning("Atomizr", detail: "Could not determine scope automatically, using placeholder", dismissable: false)
 
-      # Select placeholder scope
-      rangeStart = 1
+      if atom.config.get('atomizr.atomDefaultSyntax') is "CSON"
+        rangeStart = 1
+      else
+        rangeStart = 3
       rangeEnd = ".source".length + rangeStart
       range = [[1, rangeStart], [1, rangeEnd]]
       
+      # Select placeholder scope
       editor.selectMarker(editor.markBufferRange(range, {invalidate: 'never'}))
 
   vsCodeToSubl: ->
