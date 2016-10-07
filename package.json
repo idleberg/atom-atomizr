@@ -1,7 +1,7 @@
 {
   "name": "atomizr",
   "description": "Converts Sublime Text completions into Atom (or Visual Studio Code) snippets, and vice versa",
-  "version": "0.19.0",
+  "version": "0.20.0",
   "license": "MIT",
   "author": {
     "name": "Jan T. Sott",
