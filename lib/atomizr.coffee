@@ -256,7 +256,7 @@ module.exports = Atomizr =
       atom.notifications.addError("Atomizr", detail: e, dismissable: true)
       return
 
-    output =
+    output = 
       ".source": data
 
     # Write to editor
@@ -267,6 +267,13 @@ module.exports = Atomizr =
 
     unless atom.config.get('atomizr.warnAboutMissingScope') is false
       atom.notifications.addWarning("Atomizr", detail: "Could not determine scope automatically, using placeholder", dismissable: false)
+
+      # Select placeholder scope
+      rangeStart = 1 
+      rangeEnd = ".source".length + rangeStart
+      range = [[1, rangeStart], [1, rangeEnd]];
+      
+      editor.selectMarker(editor.markBufferRange(range, {invalidate: 'never'}))
 
   vsCodeToSubl: ->
     editor = atom.workspace.getActiveTextEditor()
@@ -288,6 +295,13 @@ module.exports = Atomizr =
 
     unless atom.config.get('atomizr.warnAboutMissingScope') is false
       atom.notifications.addWarning("Atomizr", detail: "Could not determine scope automatically, using placeholder", dismissable: false)
+
+      # Select placeholder scope
+      rangeStart = 12
+      rangeEnd = "source".length + rangeStart
+      range = [[2, rangeStart], [2, rangeEnd]];
+
+      editor.selectMarker(editor.markBufferRange(range, {invalidate: 'never'}))
 
 
   # Convert Atom snippet format (CSON to JSON, or vice versa)
