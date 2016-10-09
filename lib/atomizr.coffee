@@ -122,16 +122,20 @@ module.exports = Atomizr =
       atom.notifications.addError("Atomizr", detail: e, dismissable: true)
       return
 
-    try
-      output = JSON.stringify(data[Object.keys(data)[0]], null, 2)
-    catch e
-      atom.notifications.addError("Atomizr", detail: e, dismissable: true)
-      return
+    if Object.keys(data)[0][0] is "."
+      try
+        output = JSON.stringify(data[Object.keys(data)[0]], null, 2)
+      catch e
+        atom.notifications.addError("Atomizr", detail: e, dismissable: true)
+        return
 
-    # Write back to editor and change scope
-    editor.setText(output)
-    editor.setGrammar(atom.grammars.grammarForScopeName('source.json.'))
-    @renameFile(editor, "json")
+      # Write back to editor and change scope
+      editor.setText(output)
+      editor.setGrammar(atom.grammars.grammarForScopeName('source.json.'))
+      @renameFile(editor, "json")
+    else
+      atom.notifications.addWarning("Atomizr", detail: "This doesn't seem to be a valid Atom file. Aborting.", dismissable: false)
+      return
 
   # Convert Sublime Text completions into Atom snippet
   sublToAtom: ->
@@ -254,6 +258,10 @@ module.exports = Atomizr =
       data = parseJson(input)
     catch e
       atom.notifications.addError("Atomizr", detail: e, dismissable: true)
+      return
+
+    if Object.keys(data)[0][0] is "." or data.completions? is true
+      atom.notifications.addWarning("Atomizr", detail: "This doesn't seem to be a valid Visual Studio Code file. Aborting.", dismissable: false)
       return
 
     output =
