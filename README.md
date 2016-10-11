@@ -35,6 +35,13 @@ Clone the repository as `atomizr`:
 $ git clone https://github.com/idleberg/atom-atomizr atomizr
 ```
 
+Install Node dependencies:
+
+```bash
+$ cd atomizr
+$ yarn || npm install
+```
+
 ## Usage
 
 This plugin works on active views only, so start by opening a Sublime Text completion or an Atom snippet.
