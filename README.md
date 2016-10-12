@@ -35,10 +35,9 @@ Clone the repository as `atomizr`:
 $ git clone https://github.com/idleberg/atom-atomizr atomizr
 ```
 
-Install Node dependencies:
+Inside the cloned directory, install Node dependencies:
 
 ```bash
-$ cd atomizr
 $ yarn || npm install
 ```
 
