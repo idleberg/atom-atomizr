@@ -7,7 +7,7 @@
 [![David](https://img.shields.io/david/idleberg/atom-atomizr.svg?style=flat-square)](https://david-dm.org/idleberg/atom-atomizr)
 [![David](https://img.shields.io/david/dev/idleberg/atom-atomizr.svg?style=flat-square)](https://david-dm.org/idleberg/atom-atomizr?type=dev)
 
-Converts Sublime Text completions into Atom (or Visual Studio Code) snippets, and vice versa.
+Converts snippets for Atom, Sublime Text, TextMate, and Visual Studio Code
 
 Also available for [Sublime Text](https://github.com/idleberg/sublime-atomizr) and the [command line](https://github.com/idleberg/ruby-atomizr) (see the [comparison chart](https://gist.github.com/idleberg/db6833ee026d2cd7c043bba36733b701)).
 
@@ -51,11 +51,17 @@ Action                                     | Input           | Output
 -------------------------------------------|-----------------|----------------
 Automatic conversion¹                      | `CSON|JSON|XML` | `CSON|JSON|XML`
 Convert Atom to Sublime Text               | `CSON|JSON`     | `JSON`
+Convert Atom to TextMate                   | `CSON|JSON`     | `Plist`
 Convert Atom to Visual Studio Code         | `CSON|JSON`     | `JSON`
 Convert Sublime Text to Atom²              | `JSON|XML`      | `CSON|JSON`
+Convert Sublime Text to TextMate           | `JSON|XML`      | `Plist`
 Convert Sublime Text to Visual Studio Code | `JSON|XML`      | `JSON`
+Convert TextMate to Atom²                  | `Plist`         | `CSON|JSON`
+Convert TextMate to Sublime Text           | `Plist`         | `JSON`
+Convert TextMate to Visual Studio Code     | `Plist`         | `JSON`
 Convert Visual Studio Code to Atom²        | `JSON`          | `CSON|JSON`
 Convert Visual Studio Code to Sublime Text | `JSON`          | `JSON`
+Convert Visual Studio Code to TextMate     | `JSON`          | `Plist`
 Toggle Atom format                         | `CSON|JSON`     | `JSON|CSON`
 Toggle Sublime Text format                 | `JSON|XML`      | `XML|JSON`
 
@@ -66,16 +72,22 @@ Toggle Sublime Text format                 | `JSON|XML`      | `XML|JSON`
 
 *The following examples use the macOS keyboard shortcuts. On Linux or Windows use <kbd>Ctrl</kbd>+<kbd>Alt</kbd> as modifier key instead of <kbd>Ctrl</kbd>.*
 
-Memorizing the keyboard shortcuts for conversion is easy. Just think of the <kbd>A</kbd> key for Atom, the <kbd>S</kbd> key for Sublime Text and the <kbd>V</kbd> key for Visual Studio Code:
+Memorizing the keyboard shortcuts for conversion is easy. Just think of the <kbd>A</kbd> key for Atom, the <kbd>S</kbd> key for Sublime Text, the <kbd>T</kbd> key for TextMate, and the <kbd>V</kbd> key for Visual Studio Code:
 
 Action                             | Mnemonic | Shortcut
 -----------------------------------|----------|-----------------------------------------------------------
 Atom to Sublime Text               | “A to S” | <kbd>Ctrl</kbd>+<kbd>A</kbd>, <kbd>Ctrl</kbd>+<kbd>S</kbd>
+Atom to TextMate                   | “A to T” | <kbd>Ctrl</kbd>+<kbd>A</kbd>, <kbd>Ctrl</kbd>+<kbd>T</kbd>
 Atom to Visual Studio Code         | “A to V” | <kbd>Ctrl</kbd>+<kbd>A</kbd>, <kbd>Ctrl</kbd>+<kbd>V</kbd>
 Sublime Text to Atom               | “S to A” | <kbd>Ctrl</kbd>+<kbd>S</kbd>, <kbd>Ctrl</kbd>+<kbd>A</kbd>
+Sublime Text to TextMate           | “S to T” | <kbd>Ctrl</kbd>+<kbd>S</kbd>, <kbd>Ctrl</kbd>+<kbd>T</kbd>
 Sublime Text to Visual Studio Code | “S to V” | <kbd>Ctrl</kbd>+<kbd>S</kbd>, <kbd>Ctrl</kbd>+<kbd>V</kbd>
 Visual Studio Code to Atom         | “V to A” | <kbd>Ctrl</kbd>+<kbd>V</kbd>, <kbd>Ctrl</kbd>+<kbd>A</kbd>
 Visual Studio Code to Sublime Text | “V to S” | <kbd>Ctrl</kbd>+<kbd>V</kbd>, <kbd>Ctrl</kbd>+<kbd>S</kbd>
+Visual Studio Code to TextMate     | “V to T” | <kbd>Ctrl</kbd>+<kbd>V</kbd>, <kbd>Ctrl</kbd>+<kbd>T</kbd>
+TextMate to Atom                   | “T to A” | <kbd>Ctrl</kbd>+<kbd>T</kbd>, <kbd>Ctrl</kbd>+<kbd>A</kbd>
+TextMate to Sublime Text           | “T to S” | <kbd>Ctrl</kbd>+<kbd>T</kbd>, <kbd>Ctrl</kbd>+<kbd>S</kbd>
+TextMate to Visual Studio Code     | “T to V” | <kbd>Ctrl</kbd>+<kbd>T</kbd>, <kbd>Ctrl</kbd>+<kbd>V</kbd>
 Atom to Atom                       | “A to A” | <kbd>Ctrl</kbd>+<kbd>A</kbd>, <kbd>Ctrl</kbd>+<kbd>A</kbd>
 Sublime Text to Sublime Text       | “S to S” | <kbd>Ctrl</kbd>+<kbd>S</kbd>, <kbd>Ctrl</kbd>+<kbd>S</kbd>
 

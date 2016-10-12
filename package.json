@@ -1,6 +1,6 @@
 {
   "name": "atomizr",
-  "description": "Converts Sublime Text completions into Atom (or Visual Studio Code) snippets, and vice versa",
+  "description": "Converts snippets for Atom, Sublime Text, TextMate, and Visual Studio Code",
   "version": "0.20.2",
   "license": "MIT",
   "author": {
@@ -11,6 +11,7 @@
     "conversion",
     "convert",
     "sublime text",
+    "textmate",
     "visual studio code",
     "vscode"
   ],
