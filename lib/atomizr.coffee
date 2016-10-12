@@ -9,6 +9,7 @@ parseJson = require 'parse-json'
 
 Atom = require './includes/atom'
 SublimeText = require './includes/sublime-text'
+TextMate = require './includes/textmate'
 VsCode = require './includes/vscode'
 
 module.exports = Atomizr =
@@ -58,12 +59,18 @@ module.exports = Atomizr =
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:automatic-conversion': => @autoConvert()
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-atom-to-sublime-text': => @atomToSubl(null)
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-atom-to-visual-studio-code': => @atomToVsCode()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-atom-to-textmate': => @atomToTextmate()
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-sublime-text-to-atom': => @sublToAtom()
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-sublime-text-completions-to-atom': => @sublCompletionsToAtom()
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-sublime-text-snippet-to-atom': => @sublSnippetToAtom()
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-sublime-text-to-visual-studio-code': => @sublToVsCode()
-    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-visual-studio-code-to-atom': => @vsCodeToAtom(null)
-    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-visual-studio-code-to-sublime-text': => @vsCodeToSubl(null)
+    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-sublime-text-to-textmate': => @sublToTextmate()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-textmate-to-atom': => @textmateToAtom()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-textmate-to-sublime-text': => @textmateToSubl()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-textmate-to-visual-studio-code': => @textmateToVsCode()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-visual-studio-code-to-atom': => @vsCodeToAtom()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-visual-studio-code-to-sublime-text': => @vsCodeToSubl()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-visual-studio-code-to-textmate': => @vsCodeToTextmate()
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:toggle-atom-format': => @atomToAtom()
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:toggle-sublime-sublformat': => @sublToSubl()
 
@@ -84,6 +91,8 @@ module.exports = Atomizr =
       @sublCompletionsToAtom()
     else if scope is "text.xml.subl"
       @sublSnippetToAtom()
+    else if scope is "source.plist"
+      @textmateToAtom()
 
   # Convert Atom snippet into Sublime Text completion
   atomToSubl: (editor) ->
@@ -105,6 +114,26 @@ module.exports = Atomizr =
     editor.setText(output)
     editor.setGrammar(atom.grammars.grammarForScopeName('source.json.subl'))
     @renameFile(editor, "sublime-completions")
+
+  # Convert Atom snippet into Sublime Text completion
+  atomToTextmate: () ->
+    editor = atom.workspace.getActiveTextEditor()
+
+    unless editor?
+      atom.beep()
+      return
+    input = editor.getText()
+
+    data = Atom.read_cson(input)
+    return if data is false
+
+    output = TextMate.write_plist(@meta, data)
+    return if output is false
+
+    # Write back to editor and change scope
+    editor.setText(output)
+    editor.setGrammar(atom.grammars.grammarForScopeName('source.plist'))
+    @renameFile(editor, "tmSnippet")
 
   # Convert Atom snippet into Visual Studio Code snippet
   atomToVsCode: () ->
@@ -193,6 +222,61 @@ module.exports = Atomizr =
     else
       @makeJson(editor, output)
 
+  sublToTextmate: ->
+    editor = atom.workspace.getActiveTextEditor()
+
+    unless editor?
+      atom.beep()
+      return
+    scope = editor.getGrammar().scopeName
+
+    if scope is "source.json.subl"
+      @sublCompletionsToTextmate()
+    else if scope is "text.xml.subl"
+      @sublSnippetToTextmate()
+    else
+      atom.notifications.addWarning("Atomizr", detail: "This doesn't seem to be a valid Sublime Text file. Aborting.", dismissable: false)
+
+  # Convert Sublime Text completions into Atom snippet
+  sublCompletionsToTextmate: ->
+    editor = atom.workspace.getActiveTextEditor()
+
+    unless editor?
+      atom.beep()
+      return
+    input = editor.getText()
+
+    data = SublimeText.read_json(input)
+    return if data is false
+
+    output = TextMate.write_plist(@meta, data)
+    return if output is false
+
+    # Write back to editor and change scope
+    editor.setText(output)
+    editor.setGrammar(atom.grammars.grammarForScopeName('source.plist'))
+    @renameFile(editor, "tmSnippet")
+
+  # Convert Sublime Text snippet into Atom snippet
+  sublSnippetToTextmate: ->
+    editor = atom.workspace.getActiveTextEditor()
+
+    unless editor?
+      atom.beep()
+      return
+    input = editor.getText()
+  
+    data = SublimeText.read_xml(input)
+    return if data is false
+    
+    output = TextMate.write_plist(@meta, data)
+    return if output is false
+
+    # Write back to editor and change scope
+    editor.setText(output)
+    editor.setGrammar(atom.grammars.grammarForScopeName('source.plist'))
+    @renameFile(editor, "tmSnippet")
+
   sublToVsCode: ->
     editor = atom.workspace.getActiveTextEditor()
 
@@ -211,6 +295,7 @@ module.exports = Atomizr =
   # Convert Sublime Text completions into Atom snippet
   sublCompletionsToVsCode: ->
     editor = atom.workspace.getActiveTextEditor()
+
     unless editor?
       atom.beep()
       return
@@ -230,6 +315,7 @@ module.exports = Atomizr =
   # Convert Sublime Text snippet into Atom snippet
   sublSnippetToVsCode: ->
     editor = atom.workspace.getActiveTextEditor()
+
     unless editor?
       atom.beep()
       return
@@ -246,8 +332,70 @@ module.exports = Atomizr =
     editor.setGrammar(atom.grammars.grammarForScopeName('source.json'))
     @renameFile(editor, "json")
 
+  # Convert TextMate snippet into Atom snippet
+  textmateToAtom: ->
+    editor = atom.workspace.getActiveTextEditor()
+
+    unless editor?
+      atom.beep()
+      return
+    input = editor.getText()
+  
+    data = TextMate.read_plist(input)
+    return if data is false
+
+    output = Atom.write_cson(data)
+    return if output is false
+
+    # Write to editor
+    if atom.config.get('atomizr.atomDefaultSyntax') is "CSON"
+      @makeCoffee(editor, output)
+    else
+      @makeJson(editor, output)
+
+  # Convert TextMate snippet into Sublime Text snippet
+  textmateToSubl: ->
+    editor = atom.workspace.getActiveTextEditor()
+
+    unless editor?
+      atom.beep()
+      return
+    input = editor.getText()
+  
+    data = TextMate.read_plist(input)
+    return if data is false
+
+    output = SublimeText.write_xml(data)
+    return if output is false
+
+    # Write back to editor and change scope
+    editor.setText(output)
+    editor.setGrammar(atom.grammars.grammarForScopeName('source.xml.subl'))
+    @renameFile(editor, "sublime-snippet")
+
+  # Convert TextMate snippet into Visual Studio Code snippet
+  textmateToVsCode: ->
+    editor = atom.workspace.getActiveTextEditor()
+
+    unless editor?
+      atom.beep()
+      return
+    input = editor.getText()
+  
+    data = TextMate.read_plist(input)
+    return if data is false
+
+    output = VsCode.write_json(data)
+    return if output is false
+
+    # Write back to editor and change scope
+    editor.setText(output)
+    editor.setGrammar(atom.grammars.grammarForScopeName('source.json'))
+    @renameFile(editor, "json")
+
   vsCodeToAtom: ->
     editor = atom.workspace.getActiveTextEditor()
+
     unless editor?
       atom.beep()
       return
@@ -288,6 +436,7 @@ module.exports = Atomizr =
 
   vsCodeToSubl: ->
     editor = atom.workspace.getActiveTextEditor()
+
     unless editor?
       atom.beep()
       return
@@ -314,10 +463,32 @@ module.exports = Atomizr =
 
       editor.selectMarker(editor.markBufferRange(range, {invalidate: 'never'}))
 
+  vsCodeToTextmate: ->
+    editor = atom.workspace.getActiveTextEditor()
+
+    unless editor?
+      atom.beep()
+      return
+    input = editor.getText()
+
+    data = VsCode.read_json(input)
+    return if data is false
+
+    output = TextMate.write_plist(@meta, data)
+    return if output is false
+
+    # Write back to editor and change scope
+    editor.setText(output)
+    editor.setGrammar(atom.grammars.grammarForScopeName('source.plist'))
+    @renameFile(editor, "tmSnippet")
+
+    unless atom.config.get('atomizr.warnAboutMissingScope') is false
+      atom.notifications.addWarning("Atomizr", detail: "Could not determine scope automatically, using placeholder", dismissable: false)
 
   # Convert Atom snippet format (CSON to JSON, or vice versa)
   atomToAtom: ->
     editor = atom.workspace.getActiveTextEditor()
+
     unless editor?
       atom.beep()
       return
@@ -331,6 +502,7 @@ module.exports = Atomizr =
 
   csonToJson: ->
     editor = atom.workspace.getActiveTextEditor()
+
     unless editor?
       atom.beep()
       return
@@ -352,6 +524,7 @@ module.exports = Atomizr =
 
   jsonToCson: ->
     editor = atom.workspace.getActiveTextEditor()
+
     unless editor?
       atom.beep()
       return
@@ -370,10 +543,13 @@ module.exports = Atomizr =
   # Convert Sublime snippet format (JSON to XML, or vice versa)
   sublToSubl: ->
     editor = atom.workspace.getActiveTextEditor()
+
     unless editor?
       atom.beep()
       return
     scope = editor.getGrammar().scopeName
+
+    console.log scope
     
     # Automatic conversion, based on scope
     if scope is "source.json.subl"
@@ -383,6 +559,7 @@ module.exports = Atomizr =
 
   xmlToJson: () ->
     editor = atom.workspace.getActiveTextEditor()
+
     unless editor?
       atom.beep()
       return
@@ -401,6 +578,7 @@ module.exports = Atomizr =
 
   jsonToXml: () ->
     editor = atom.workspace.getActiveTextEditor()
+
     unless editor?
       atom.beep()
       return

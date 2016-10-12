@@ -21,12 +21,6 @@ module.exports =
     # Conversion
     output = {}
 
-    # Get scope, convert if necessary
-    # for scopeSubl, scopeAtom of shared.exceptions
-    #   if data.scope is scopeSubl
-    #     output.scope = scopeAtom
-    #     break
-    #   else
     output.scope = data.scope
 
     output.completions = []

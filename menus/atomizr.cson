@@ -1,56 +1,87 @@
 'context-menu':
   'atom-text-editor': [
     {
-      'label': 'Atomizr (automatic)'
-      'command': 'atomizr:automatic-conversion'
+      command: 'atomizr:automatic-conversion'
+      label: 'Atomizr (automatic)'
     }
   ]
-'menu': [
+menu: [
   {
-    'label': 'Packages'
-    'submenu': [
-      'label': 'Atomizr'
-      'submenu': [
-        {
-          'label': 'Automatic Conversion'
-          'command': 'atomizr:automatic-conversion'
-        },
-        { 'type': 'separator' },
-        {
-          'label': 'Toggle Atom format (CSON↔JSON)'
-          'command': 'atomizr:toggle-atom-format'
-        },
-        {
-          'label': 'Convert Atom to Sublime Text'
-          'command': 'atomizr:convert-atom-to-sublime-text'
-        },
-        {
-          'label': 'Convert Atom to Visual Studio Code'
-          'command': 'atomizr:convert-atom-to-visual-studio-code'
-        },
-        { 'type': 'separator' },
-        {
-          'label': 'Toggle Sublime Text format (XML↔JSON)'
-          'command': 'atomizr:toggle-sublime-sublformat'
-        },
-        {
-          'label': 'Convert Sublime Text to Atom'
-          'command': 'atomizr:convert-sublime-text-to-atom'
-        },
-        {
-          'label': 'Convert Sublime Text to Visual Studio Code'
-          'command': 'atomizr:convert-sublime-text-to-visual-studio-code'
-        }
-        { 'type': 'separator' },
-        {
-          'label': 'Convert Visual Studio Code to Atom'
-          'command': 'atomizr:convert-visual-studio-code-to-atom'
-        },
-        {
-          'label': 'Convert Visual Studio Code to Sublime Text'
-          'command': 'atomizr:convert-visual-studio-code-to-sublime-text'
-        }
-      ]
+    label: 'Packages'
+    submenu: [
+      {
+        label: 'Atomizr'
+        submenu: [
+          {
+            command: 'atomizr:automatic-conversion'
+            label: 'Automatic Conversion'
+          }
+          {
+            type: 'separator'
+          }
+          {
+            command: 'atomizr:toggle-atom-format'
+            label: 'Toggle Atom format (CSON\u2194JSON)'
+          }
+          {
+            command: 'atomizr:convert-atom-to-sublime-text'
+            label: 'Convert Atom to Sublime Text'
+          }
+          {
+            command: 'atomizr:convert-atom-to-textmate'
+            label: 'Convert Atom to TextMate'
+          }
+          {
+            command: 'atomizr:convert-atom-to-visual-studio-code'
+            label: 'Convert Atom to Visual Studio Code'
+          }
+          {
+            type: 'separator'
+          }
+          {
+            command: 'atomizr:toggle-sublime-sublformat'
+            label: 'Toggle Sublime Text format (XML\u2194JSON)'
+          }
+          {
+            command: 'atomizr:convert-sublime-text-to-atom'
+            label: 'Convert Sublime Text to Atom'
+          }
+          {
+            command: 'atomizr:convert-sublime-text-to-textmate'
+            label: 'Convert Sublime Text to Textmate'
+          }
+          {
+            command: 'atomizr:convert-sublime-text-to-visual-studio-code'
+            label: 'Convert Sublime Text to Visual Studio Code'
+          }
+          {
+            type: 'separator'
+          }
+          {
+            command: 'atomizr:convert-textmate-to-atom'
+            label: 'Convert Textmate to Atom'
+          }
+          {
+            command: 'atomizr:convert-textmate-to-sublime-text'
+            label: 'Convert Textmate to Sublime Text'
+          }
+          {
+            command: 'atomizr:convert-textmate-to-visual-studio-code'
+            label: 'Convert Textmate to Visual Studio Code'
+          }
+          {
+            type: 'separator'
+          }
+          {
+            command: 'atomizr:convert-visual-studio-code-to-atom'
+            label: 'Convert Visual Studio Code to Atom'
+          }
+          {
+            command: 'atomizr:convert-visual-studio-code-to-sublime-text'
+            label: 'Convert Visual Studio Code to Sublime Text'
+          }
+        ]
+      }
     ]
   }
 ]

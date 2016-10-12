@@ -17,13 +17,19 @@
   "activationCommands": {
     "atom-workspace": [
       "atomizr:convert-atom-to-sublime-text",
+      "atomizr:convert-atom-to-textmate",
       "atomizr:convert-atom-to-visual-studio-code",
       "atomizr:convert-sublime-text-completions-to-atom",
       "atomizr:convert-sublime-text-snippet-to-atom",
       "atomizr:convert-sublime-text-to-atom",
+      "atomizr:convert-sublime-text-to-textmate",
       "atomizr:convert-sublime-text-to-visual-studio-code",
+      "atomizr:convert-textmate-to-atom",
+      "atomizr:convert-textmate-to-sublime-text",
+      "atomizr:convert-textmate-to-visual-studio-code",
       "atomizr:convert-visual-studio-code-to-atom",
       "atomizr:convert-visual-studio-code-to-sublime-text",
+      "atomizr:convert-visual-studio-code-to-textmate",
       "atomizr:toggle-atom-format",
       "atomizr:toggle-sublime-sublformat",
       "atomizr:automatic-conversion"
@@ -41,6 +47,8 @@
     "cson": "^3.0.2",
     "cson-parser": "^1.3.4",
     "parse-json": "^2.2.0",
+    "plist": "^2.0.1",
+    "uuid": "^2.0.3",
     "xml-js": "^0.9.5"
   },
   "devDependencies": {
