@@ -548,8 +548,6 @@ module.exports = Atomizr =
       atom.beep()
       return
     scope = editor.getGrammar().scopeName
-
-    console.log scope
     
     # Automatic conversion, based on scope
     if scope is "source.json.subl"
