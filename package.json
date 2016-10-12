@@ -1,7 +1,7 @@
 {
   "name": "atomizr",
   "description": "Converts snippets for Atom, Sublime Text, TextMate, and Visual Studio Code",
-  "version": "0.20.2",
+  "version": "0.21.0",
   "license": "MIT",
   "author": {
     "name": "Jan T. Sott",
