@@ -17,7 +17,7 @@ Install `atomizr` from Atom's [Package Manager](http://flight-manual.atom.io/usi
 
 `$ apm install atomizr`
 
-### GitHub
+### Using Git
 
 Change to your Atom packages directory:
 
