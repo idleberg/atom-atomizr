@@ -32,8 +32,8 @@ module.exports = Atomizr =
       type: "boolean"
       default: true
       order: 3
-    ignoreTabChar:
-      title: "Ignore tab-character"
+    ignoreTabSeparator:
+      title: "Ignore tab-separator"
       description: "Do not split Sublime Text completion at `\\t` character"
       type: "boolean"
       default: false
