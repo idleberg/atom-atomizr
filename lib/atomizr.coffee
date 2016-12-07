@@ -32,12 +32,18 @@ module.exports = Atomizr =
       type: "boolean"
       default: true
       order: 3
+    ignoreTabChar:
+      title: "Ignore tab-character"
+      description: "Do not split Sublime Text completion at `\\t` character"
+      type: "boolean"
+      default: false
+      order: 4
     warnAboutMissingScope:
       title: "Warn about missing scope"
       description: "Visual Studio Code doesn't store the scope in snippet files. Enabling this setting will warn the user."
       type: "boolean"
       default: true
-      order: 4
+      order: 5
     atomDefaultSyntax:
       title: "Atom Default Syntax"
       description: "Specify your preferred default syntax for Atom snippets"
@@ -47,7 +53,7 @@ module.exports = Atomizr =
         "CSON",
         "JSON"
       ],
-      order: 5
+      order: 6
   subscriptions: null
   meta: "Generated with Atomizr – https://atom.io/packages/atomizr"
 

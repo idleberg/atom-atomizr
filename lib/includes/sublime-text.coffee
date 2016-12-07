@@ -30,7 +30,7 @@ module.exports =
       if v.trigger?
 
         # Split tab-separated description
-        unless v.trigger.indexOf("\t") is -1
+        unless v.trigger.indexOf("\t") is -1 or atom.config.get('atomizr.ignoreTabChar') is true
           tabs = v.trigger.split("\t")
 
           atom.notifications.addWarning("Atomizr", detail: "Conversion aborted, trigger '#{v.trigger}' contains multiple tabs", dismissable: true) if tabs.length > 2
