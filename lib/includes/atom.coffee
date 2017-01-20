@@ -76,4 +76,3 @@ module.exports =
     output[scope] = snippet
 
     return output
-
