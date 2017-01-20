@@ -80,6 +80,14 @@ menu: [
             command: 'atomizr:convert-visual-studio-code-to-sublime-text'
             label: 'Convert Visual Studio Code to Sublime Text'
           }
+          {
+            type: 'separator'
+          }
+
+          {
+            command: 'atomizr:open-package-settings'
+            label: 'Open Package Settings'
+          }
         ]
       }
     ]

@@ -1,4 +1,5 @@
 {CompositeDisposable} = require 'atom'
+meta = require '../package.json'
 
 # 3rd-party dependencies
 fs = require 'fs'
@@ -79,6 +80,7 @@ module.exports = Atomizr =
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:convert-visual-studio-code-to-textmate': => @vsCodeToTextmate()
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:toggle-atom-format': => @atomToAtom()
     @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:toggle-sublime-sublformat': => @sublToSubl()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'atomizr:open-package-settings': => @openSettings()
 
   deactivate: ->
     @subscriptions.dispose()
@@ -626,3 +628,6 @@ module.exports = Atomizr =
     editor.setText(output)
     editor.setGrammar(atom.grammars.grammarForScopeName('source.json'))
     @renameFile(editor, "json")
+
+  openSettings: ->
+    atom.workspace.open("atom://config/packages/#{meta.name}")

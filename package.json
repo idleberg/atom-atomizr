@@ -33,6 +33,7 @@
       "atomizr:convert-visual-studio-code-to-textmate",
       "atomizr:toggle-atom-format",
       "atomizr:toggle-sublime-sublformat",
+      "atomizr:open-package-settings",
       "atomizr:automatic-conversion"
     ]
   },
