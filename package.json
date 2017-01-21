@@ -51,7 +51,7 @@
     "parse-json": "^2.2.0",
     "plist": "^2.0.1",
     "uuid": "^3.0.1",
-    "xml-js": "^0.9.5"
+    "xml-js": "^1.0.0"
   },
   "devDependencies": {
     "coffeelint-stylish": "^0.1.2",
