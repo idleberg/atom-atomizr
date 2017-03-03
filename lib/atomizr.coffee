@@ -168,7 +168,7 @@ module.exports = Atomizr =
 
       # Write back to editor and change scope
       editor.setText(output)
-      editor.setGrammar(atom.grammars.grammarForScopeName('source.json.'))
+      editor.setGrammar(atom.grammars.grammarForScopeName('source.json'))
       @renameFile(editor, "json")
     else
       atom.notifications.addWarning("Atomizr", detail: "This doesn't seem to be a valid Atom file. Aborting.", dismissable: false)
