@@ -5,7 +5,6 @@
 [![apm](https://img.shields.io/apm/dm/atomizr.svg?style=flat-square)](https://atom.io/packages/atomizr)
 [![Travis](https://img.shields.io/travis/idleberg/atom-atomizr.svg?style=flat-square)](https://travis-ci.org/idleberg/atom-atomizr)
 [![David](https://img.shields.io/david/idleberg/atom-atomizr.svg?style=flat-square)](https://david-dm.org/idleberg/atom-atomizr)
-[![David](https://img.shields.io/david/dev/idleberg/atom-atomizr.svg?style=flat-square)](https://david-dm.org/idleberg/atom-atomizr?type=dev)
 
 Converts snippets for Atom, Sublime Text, TextMate, and Visual Studio Code
 
