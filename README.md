@@ -46,23 +46,23 @@ This plugin works on active views only, so start by opening a Sublime Text compl
 
 There are several commands available to start conversion, each available from the [Command Palette](http://flight-manual.atom.io/getting-started/sections/atom-basics/#_command_palette) and the Packages menu.
 
-Action                                     | Input           | Output
--------------------------------------------|-----------------|----------------
-Automatic conversion¹                      | CSON\|JSON\|XML | CSON\|JSON\|XML
-Convert Atom to Sublime Text               | CSON\|JSON      | JSON
-Convert Atom to TextMate                   | CSON\|JSON      | Plist
-Convert Atom to Visual Studio Code         | CSON\|JSON      | JSON
-Convert Sublime Text to Atom²              | JSON\|XML       | CSON\|JSON
-Convert Sublime Text to TextMate           | JSON\|XML       | Plist
-Convert Sublime Text to Visual Studio Code | JSON\|XML       | JSON
-Convert TextMate to Atom²                  | Plist           | CSON\|JSON
-Convert TextMate to Sublime Text           | Plist           | JSON
-Convert TextMate to Visual Studio Code     | Plist           | JSON
-Convert Visual Studio Code to Atom²        | JSON            | CSON\|JSON
-Convert Visual Studio Code to Sublime Text | JSON            | JSON
-Convert Visual Studio Code to TextMate     | JSON            | Plist
-Toggle Atom format                         | CSON\|JSON      | JSON\|CSON
-Toggle Sublime Text format                 | JSON\|XML       | XML\|JSON
+Action                                     | Input                | Output
+-------------------------------------------|----------------------|----------------------
+Automatic conversion¹                      |`CSON`, `JSON`, `XML` | `CSON`, `JSON`, `XML`
+Convert Atom to Sublime Text               |`CSON`, `JSON`        | `JSON`
+Convert Atom to TextMate                   |`CSON`, `JSON`        | `Plist`
+Convert Atom to Visual Studio Code         |`CSON`, `JSON`        | `JSON`
+Convert Sublime Text to Atom²              |`JSON`, `XML`         | `CSON`, `JSON`
+Convert Sublime Text to TextMate           |`JSON`, `XML`         | `Plist`
+Convert Sublime Text to Visual Studio Code |`JSON`, `XML`         | `JSON`
+Convert TextMate to Atom²                  |`Plist`               | `CSON`, `JSON`
+Convert TextMate to Sublime Text           |`Plist`               | `JSON`
+Convert TextMate to Visual Studio Code     |`Plist`               | `JSON`
+Convert Visual Studio Code to Atom²        |`JSON`                | `CSON`, `JSON`
+Convert Visual Studio Code to Sublime Text |`JSON`                | `JSON`
+Convert Visual Studio Code to TextMate     |`JSON`                | `Plist`
+Toggle Atom format                         |`CSON`, `JSON`        | `JSON`, `CSON`
+Toggle Sublime Text format                 |`JSON`, `XML`         | `XML`, `JSON`
 
 ¹⁾ converts Atom and Sublime Text only  
 ²⁾ target syntax can be specified in the settings  
