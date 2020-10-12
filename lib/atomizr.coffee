@@ -610,8 +610,12 @@ module.exports = Atomizr =
       parentDir = path.dirname inputFile
       baseName = path.basename inputFile, path.extname inputFile
       outputFile = path.join parentDir, baseName + ".#{extension}"
-      fs.rename inputFile, outputFile
-      editor.saveAs(outputFile)
+      fs.rename inputFile, outputFile, (err) ->
+        if err
+          throw err
+        editor.saveAs(outputFile)
+        return
+      
 
   makeCoffee: (editor, input) ->
     output = CSON.createCSONString(input)
